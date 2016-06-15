@@ -1,7 +1,4 @@
 e
 1
-<<<<<<< HEAD
-3
-=======
 2
->>>>>>> refs/remotes/origin/master
+3
