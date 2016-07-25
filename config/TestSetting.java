@@ -26,6 +26,7 @@ public class TestSetting {
 	public static String ProjectPart1 = "";
 	public static int Timeout_Sec = 0;	
 	public static String ExcelFileName = "";	
+	public static String IEDriverPath = "";	
 	public static String ExcelConsoleSheet = "";	
 	public static int TestCaseCol = 0;	
 	public static int TestResultCol = 0;	
@@ -36,6 +37,7 @@ public class TestSetting {
 	public static String Dbuser = "";	
 	public static String Dbpass = "";	
 	public static String DriverName = "";	
+	public static String DebugCase = "";	
 
 	public static int RunThread=1;
 	
@@ -48,15 +50,18 @@ public class TestSetting {
 		
 		CommUtil.logger.info("Loading config.properties");
 		TestSetting.loadConfig();
-		//System.setProperty("webdriver.ie.driver","C:\\Users\\yren9\\workspace\\selenium\\IEDriverServer.exe");
+		String IEDriverFullPath = IEDriverPath + "\\IEDriverServer.exe";
+		System.setProperty("webdriver.ie.driver",IEDriverFullPath);
 		
 		try {
-			ExcelUtil.loadExcelFile();
-			
-			CommUtil.logger.info("Getting all executable cases...");
-			TestSetting.caselist = ExcelUtil.getAllExecuteCases();
-			ExcelUtil.clearResult();
-			ExcelUtil.closeWorkbook();
+	        if (TestSetting.DebugCase.equals("")) {
+				ExcelUtil.loadExcelFile();
+				
+				CommUtil.logger.info("Getting all executable cases...");
+				TestSetting.caselist = ExcelUtil.getAllExecuteCases();
+				ExcelUtil.clearResult();
+				ExcelUtil.closeWorkbook();
+	        }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,6 +101,7 @@ public class TestSetting {
 			TestSetting.UserName = prop.getProperty("UserName");
 			TestSetting.UserPassword = prop.getProperty("UserPassword");
 			TestSetting.Timeout_Sec = Integer.parseInt(prop.getProperty("Timeout_Sec"));
+			TestSetting.IEDriverPath = prop.getProperty("IEDriverPath");
 			TestSetting.ExcelFileName = prop.getProperty("ExcelFileName");
 			TestSetting.ExcelConsoleSheet = prop.getProperty("ExcelConsoleSheet");
 			TestSetting.TestCaseCol = Integer.parseInt(prop.getProperty("TestCaseCol"));
@@ -104,6 +110,7 @@ public class TestSetting {
 			TestSetting.TestExcuteCol = Integer.parseInt(prop.getProperty("TestExcuteCol"));
 			TestSetting.TestStartRow = Integer.parseInt(prop.getProperty("TestStartRow"));
 			TestSetting.RunThread = Integer.parseInt(prop.getProperty("RunThread"));
+			TestSetting.DebugCase = prop.getProperty("DebugCase");
 			TestSetting.Dburl = prop.getProperty("Dburl");
 			TestSetting.Dbuser = prop.getProperty("Dbuser");
 			TestSetting.Dbpass = prop.getProperty("Dbpass");
@@ -118,6 +125,7 @@ public class TestSetting {
 			CommUtil.logger.info("UserName="+TestSetting.UserName);
 			CommUtil.logger.info("UserPassword="+TestSetting.UserPassword);
 			CommUtil.logger.info("Timeout_Sec="+TestSetting.Timeout_Sec);
+			CommUtil.logger.info("IEDriverPath="+TestSetting.IEDriverPath);
 			CommUtil.logger.info("ExcelFileName="+TestSetting.ExcelFileName);
 			CommUtil.logger.info("ExcelConsoleSheet="+TestSetting.ExcelConsoleSheet);
 			CommUtil.logger.info("TestCaseCol="+TestSetting.TestCaseCol);
@@ -126,6 +134,7 @@ public class TestSetting {
 			CommUtil.logger.info("TestExcuteCol="+TestSetting.TestExcuteCol);
 			CommUtil.logger.info("TestStartRow="+TestSetting.TestStartRow);
 			CommUtil.logger.info("RunThread="+TestSetting.RunThread);
+			CommUtil.logger.info("DebugCase="+TestSetting.DebugCase);
 			CommUtil.logger.info("Dburl="+TestSetting.Dburl);
 			CommUtil.logger.info("Dbuser="+TestSetting.Dbuser);
 			CommUtil.logger.info("Dbpass="+TestSetting.Dbpass);
