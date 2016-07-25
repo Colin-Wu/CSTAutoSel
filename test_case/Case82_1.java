@@ -12,7 +12,7 @@ import config.TestSetting;
 import script_lib.CommUtil;
 
 public class Case82_1 {
-	
+
 	public static String run (WebDriver webdriver) throws Exception {
 		
 		String retVal = "-1";

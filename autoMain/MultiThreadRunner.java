@@ -26,15 +26,21 @@ public class MultiThreadRunner implements Runnable{
         TestSuite suite = new TestSuite();
 
         //suite.addTestSuite(TestSet.class);
+        if (TestSetting.DebugCase.equals("")) {
+            for (int i = 0; i < distributedCaselist.size(); i++) {
+            	HashMap<?, ?> map = (HashMap<?, ?>) distributedCaselist.get(i);
 
-        for (int i = 0; i < distributedCaselist.size(); i++) {
-        	HashMap<?, ?> map = (HashMap<?, ?>) distributedCaselist.get(i);
-
-        	String caseName = (String) map.get("casename");
-        	String testName = "test" + caseName;
-        	
-        	suite.addTest(new TestSet(testName, webdriver));
+            	String caseName = (String) map.get("casename");
+            	String testName = "test" + caseName;
+            	
+            	suite.addTest(new TestSet(testName, webdriver));
+            }       	
+        } else {
+        	CommUtil.logger.info("Debug mode... case name:"+TestSetting.DebugCase);
+        	suite.addTest(new TestSet(TestSetting.DebugCase, webdriver));
         }
+
+
         return suite;
     }
 
@@ -46,6 +52,7 @@ public class MultiThreadRunner implements Runnable{
 		try {
 			WebDriver webdriver = TestSetting.openBrowser();
 			junit.textui.TestRunner.run(suite(webdriver));
+			webdriver.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
