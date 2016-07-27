@@ -79,7 +79,8 @@ public class TestSetting {
 	    //Puts a Implicit wait, Will wait for 10 seconds before throwing exception
 		driver.manage().timeouts().implicitlyWait(Timeout_Sec, TimeUnit.SECONDS);
 		//driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-
+		
+		driver.manage().window().maximize();
 	    //Launch website
 		driver.navigate().to(SiteURL);
 		
