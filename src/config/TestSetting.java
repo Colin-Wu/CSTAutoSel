@@ -22,6 +22,7 @@ public class TestSetting {
 	public static String UserPassword = "";		
 	public static String Project = "";		
 	public static String StandardPONum = "";	
+	public static String RepairPONum = "";	
 	public static String ShipVia = "";
 	public static String ProjectPart1 = "";
 	public static int Timeout_Sec = 0;	
@@ -118,6 +119,7 @@ public class TestSetting {
 			TestSetting.DriverName = prop.getProperty("DriverName");
 			TestSetting.Project = prop.getProperty("Project");
 			TestSetting.StandardPONum = prop.getProperty("StandardPONum");
+			TestSetting.RepairPONum = prop.getProperty("RepairPONum");
 			TestSetting.ShipVia = prop.getProperty("ShipVia");
 			TestSetting.ProjectPart1 = prop.getProperty("ProjectPart1");
 			
@@ -142,6 +144,7 @@ public class TestSetting {
 			CommUtil.logger.info("DriverName="+TestSetting.DriverName);
 			CommUtil.logger.info("Project="+TestSetting.Project);
 			CommUtil.logger.info("StandardPONum="+TestSetting.StandardPONum);
+			CommUtil.logger.info("RepairPONum="+TestSetting.RepairPONum);
 			CommUtil.logger.info("ShipVia="+TestSetting.ShipVia);
 			CommUtil.logger.info("ProjectPart1="+TestSetting.ProjectPart1);
 			

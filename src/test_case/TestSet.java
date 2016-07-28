@@ -1,6 +1,8 @@
 package test_case;
 
 
+import java.lang.reflect.Method;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,22 +36,25 @@ public class TestSet extends TestCase{
 		}	
 
     }
-	@Test
-	public void test82_2() {
-		
+    public String runCase(String caseid, WebDriver webdriver,String expectRet) {
+    	  
 		String retVal = "-1";
-		int caseidx = -1;
-		
-		String caseid = "82_2";
 		String testid = "test"+caseid;
+		String caseClassname = "test_case.Case"+caseid;
+		
+		int caseidx = -1;
 		
 		try {
 			
 			caseidx = CommUtil.getCaselistIdxByCasename(caseid);
 
-			retVal = Case82_2.run(webdriver);
-			
-			if (retVal.equals("1")) {
+        	Class<?> classType = Class.forName(caseClassname);
+        	Object obj  = classType.newInstance();
+        	Method method = classType.getMethod("run", WebDriver.class); 
+        	Object result = method.invoke(obj, webdriver);
+        	retVal = (String)result;
+        	
+			if (retVal.equals(expectRet)) {
 				CommUtil.setResultToCaselist(caseidx, ResultSuccess);	
 				CommUtil.logger.info(testid + " result: " + ResultSuccess);			
 			} else {
@@ -64,39 +69,41 @@ public class TestSet extends TestCase{
 			exceptionHandle(testid, caseidx, e);
 			retVal = "-1";
 		}
-		assertEquals("1",retVal);
+		return retVal;
+
+    }
+	@Test
+	public void test82_3() {
+		
+		String retVal = "-1";
+		String expectRet = "2";	
+		String caseid = "82_3";
+		
+		retVal = runCase(caseid, webdriver, expectRet);
+		
+		assertEquals(expectRet,retVal);
+	}
+	@Test
+	public void test82_2() {
+		
+		String retVal = "-1";
+		String expectRet = "1";
+		String caseid = "82_2";
+		
+		retVal = runCase(caseid, webdriver, expectRet);
+		
+		assertEquals(expectRet,retVal);
 	}
 	@Test
 	public void test82_1() {
 		
 		String retVal = "-1";
-		int caseidx = -1;
-		
+		String expectRet = "1";		
 		String caseid = "82_1";
-		String testid = "test"+caseid;
 		
-		try {
-			
-			caseidx = CommUtil.getCaselistIdxByCasename(caseid);
-
-			retVal = Case82_1.run(webdriver);
-			
-			if (retVal.equals("2")) {
-				CommUtil.setResultToCaselist(caseidx, ResultSuccess);	
-				CommUtil.logger.info(testid + " result: " + ResultSuccess);			
-			} else {
-				CommUtil.setResultToCaselist(caseidx, ResultFail);	
-				CommUtil.logger.info(testid + " retVal: " + retVal + " result: " + ResultFail);					
-			}
-
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			exceptionHandle(testid, caseidx, e);
-			retVal = "-1";
-		}
-		assertEquals("2",retVal);
+		retVal = runCase(caseid, webdriver, expectRet);
+		
+		assertEquals(expectRet,retVal);
 	}
 
 }

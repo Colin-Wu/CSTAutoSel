@@ -96,8 +96,11 @@ public class POMngtAction {
 			WebElement lblMessage = Obj.getLblMessage();	
 
 			if (CommUtil.isMatchByReg(lblMessage.getText(), "There are item\\(s\\) received against this PO, you cannot cancel\\.")) {
-				CommUtil.logger.info(POMngtAction.class.getName() + " > Msg: There are item\\(s\\) received against this PO, you cannot cancel\\.");
-				ret = "2";
+				CommUtil.logger.info(POMngtAction.class.getName() + " > Msg: There are item(s) received against this PO, you cannot cancel.");
+				ret = "1";
+			} else if (CommUtil.isMatchByReg(lblMessage.getText(), "This is associated with a repair order and cannot be canceled\\.")) {
+				CommUtil.logger.info(POMngtAction.class.getName() + " > Msg: This is associated with a repair order and cannot be canceled.");
+				ret = "2";			
 			}
 		} else {
 			boolean isBtnYesexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getBtnConfirmYesLocator(), 0);
@@ -113,7 +116,7 @@ public class POMngtAction {
 					WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
 
 					if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "PO delete successfully\\.")) {
-						CommUtil.logger.info(POMngtAction.class.getName() + " > PO delete successfully");
+						CommUtil.logger.info(POMngtAction.class.getName() + " > PO delete successfully.");
 						ret = "0";
 					}
 				}
