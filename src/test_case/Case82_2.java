@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 
 import action_lib.common_action.CommonAction;
 import action_lib.cst_main.CST_MainAction;
-import action_lib.index.IndexPageAction;
 import action_lib.inv_mngt.DockReceivingAction;
 import action_lib.inv_mngt.InvIndexAction;
 import action_lib.odr_mngt.POMngtAction;
@@ -27,12 +26,8 @@ public class Case82_2 {
 		String ProjectCode = TestSetting.Project;
 		String BoxCnt = "1";
 		String PalletCnt = "1";
-		
-		CommUtil.logger.info(Case82_2.class.getName() + " > Login");	
-		IndexPageAction idxpage = new IndexPageAction(webdriver);
-		idxpage.login();
-		
-		CommUtil.logger.info(Case82_2.class.getName() + " > CreateStdPO_CA");	
+			
+		CommUtil.logger.info(" > CreateStdPO_CA");	
 		HashMap<String, String> InputObj = new HashMap<String, String>();
 		InputObj.put("ProjectCode", ProjectCode);
 		InputObj.put("PartNum", ProjectPart1);		
@@ -43,7 +38,7 @@ public class Case82_2 {
 		retVal = retObj.get("RetVal").toString();
 		String PONum = retObj.get("PONum").toString();	
 
-		CommUtil.logger.info(Case82_2.class.getName() + " > Search and delete PO");	
+		CommUtil.logger.info(" > Search and delete PO");	
 		InputObj = new HashMap<String, String>();
 		InputObj.put("SearchProjectCode", ProjectCode);
 		InputObj.put("SearchCustomerPO", PONum);		
@@ -54,16 +49,16 @@ public class Case82_2 {
 			
 		}
 		
-		CommUtil.logger.info(Case82_2.class.getName() + " > Verify can't receiving after PO deleted.");
-		CommUtil.logger.info(Case82_2.class.getName() + " > MenuInventory");
+		CommUtil.logger.info(" > Verify can't receiving after PO deleted.");
+		CommUtil.logger.info(" > MenuInventory");
 		CST_MainAction mainpage = new CST_MainAction(webdriver);
 		mainpage.MenuInventory();;
 		
-		CommUtil.logger.info(Case82_2.class.getName() + " > GotoDockReceiving");
+		CommUtil.logger.info(" > GotoDockReceiving");
 		InvIndexAction invidxpage = new InvIndexAction(webdriver);
 		invidxpage.GotoDockReceiving();
 
-		CommUtil.logger.info(Case82_2.class.getName() + " > NewDocReceiving");
+		CommUtil.logger.info(" > NewDocReceiving");
 		DockReceivingAction dockRecvepage = new DockReceivingAction(webdriver);
 		InputObj = new HashMap<String, String>();
 		InputObj.put("TrackNum", TrackNum);
@@ -73,9 +68,6 @@ public class Case82_2 {
 		InputObj.put("BoxCnt",BoxCnt);
 		InputObj.put("PalletCnt", PalletCnt);
 		retVal = dockRecvepage.NewDocReceiving(InputObj);
-
-		CommUtil.logger.info(Case82_2.class.getName() + " > Logout");	
-		mainpage.logout();
 		
 		return retVal;
 	}

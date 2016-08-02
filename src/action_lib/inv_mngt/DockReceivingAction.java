@@ -53,7 +53,7 @@ public class DockReceivingAction {
 		Select SelProjectCode = Obj.getSelProjectCode();
 		boolean isHasVal = SeleniumUtil.isSelectHasOption(SelProjectCode, ProjectCode);
 		if (!isHasVal) {
-			CommUtil.logger.info(DockReceivingAction.class.getName() + " > Project code not found in project list");
+			CommUtil.logger.info(" > Project code not found in project list");
 			ret = "1";
 			return ret;
 		}
@@ -77,7 +77,7 @@ public class DockReceivingAction {
 			WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
 
 			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
-				CommUtil.logger.info(DockReceivingAction.class.getName() + " > Dock Entry has been saved\\.");
+				CommUtil.logger.info(" > Dock Entry has been saved\\.");
 				ret = "0";
 			}
 		}

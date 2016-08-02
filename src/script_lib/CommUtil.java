@@ -8,13 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-
-import autoMain.AutoTest;
 import config.TestSetting;
 
 public class CommUtil {
 	
-	public static Logger logger = Logger.getLogger(AutoTest.class.getName()) ; 
+	public static Logger logger = Logger.getLogger(CommUtil.class.getName()) ; 
 	
 	public static int getCaselistIdxByCasename (String SearchingCaseName) {
 		
@@ -98,5 +96,7 @@ public class CommUtil {
 		ret = dateTimeFormat.format(currentTime);
 		
 		return ret;
-	}		
+	}
+		
+
 }

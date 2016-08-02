@@ -24,19 +24,19 @@ public class CommonAction {
 	
 	public HashMap<String, String> CreateStdPO_CA (HashMap<String, ?> InputObj) throws NoSuchElementException  {
 
-		CommUtil.logger.info(CommonAction.class.getName() + " > MenuOrdMngt");
+		CommUtil.logger.info(" > MenuOrdMngt");
 		CST_MainAction mainpage = new CST_MainAction(webdriver);
 		mainpage.MenuOrdMngt();
 		
-		CommUtil.logger.info(CommonAction.class.getName() + " > GotoPOMngt");
+		CommUtil.logger.info(" > GotoPOMngt");
 		OrderIndexAction ordidxpage = new OrderIndexAction(webdriver);
 		ordidxpage.GotoPOMngt();
 			
-		CommUtil.logger.info(CommonAction.class.getName() + " > NewPO");
+		CommUtil.logger.info(" > NewPO");
 		POMngtAction pomngtpage = new POMngtAction(webdriver);
 		pomngtpage.NewPO();
 		
-		CommUtil.logger.info(CommonAction.class.getName() + " > CreateStandardPO");
+		CommUtil.logger.info(" > CreateStandardPO");
 		CreatePOAction createPOpage = new CreatePOAction(webdriver);
 		HashMap<String, String> retObj = createPOpage.CreateStandardPO(InputObj);
 		
@@ -47,15 +47,15 @@ public class CommonAction {
 	public String SearchPO_CA (HashMap<String, ?> InputObj) throws NoSuchElementException  {
 		String isFound = "0";	
 		
-		CommUtil.logger.info(CommonAction.class.getName() + " > MenuOrdMngt");
+		CommUtil.logger.info(" > MenuOrdMngt");
 		CST_MainAction mainpage = new CST_MainAction(webdriver);
 		mainpage.MenuOrdMngt();
 		
-		CommUtil.logger.info(CommonAction.class.getName() + " > GotoPOMngt");
+		CommUtil.logger.info(" > GotoPOMngt");
 		OrderIndexAction ordidxpage = new OrderIndexAction(webdriver);
 		ordidxpage.GotoPOMngt();
 			
-		CommUtil.logger.info(CommonAction.class.getName() + " > SearchPO");
+		CommUtil.logger.info(" > SearchPO");
 		POMngtAction pomngtpage = new POMngtAction(webdriver);
 		isFound = pomngtpage.SearchPO(InputObj);
 		
