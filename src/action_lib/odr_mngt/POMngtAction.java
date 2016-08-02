@@ -56,10 +56,10 @@ public class POMngtAction {
 		int tblRow = SeleniumUtil.getTableRows(tblResult);
 		
 		if (tblRow > 1) {
-			CommUtil.logger.info(POMngtAction.class.getName() + " > PO is Found.");
+			CommUtil.logger.info(" > PO is Found.");
 			isFound = "1";
 		} else {
-			CommUtil.logger.info(POMngtAction.class.getName() + " > PO is not Found.");
+			CommUtil.logger.info(" > PO is not Found.");
 		}
 		
 		return isFound;
@@ -86,7 +86,7 @@ public class POMngtAction {
 		WebElement deletelink = SeleniumUtil.getCellElement(webdriver, tblResult, delCol, searchrow, locator);
 		
 		if (deletelink != null) {
-			CommUtil.logger.info(POMngtAction.class.getName() + " > Delete link clicked. PO:" + SearchCustomerPO);
+			CommUtil.logger.info(" > Delete link clicked. PO:" + SearchCustomerPO);
 			deletelink.click();
 		}
 		
@@ -96,10 +96,10 @@ public class POMngtAction {
 			WebElement lblMessage = Obj.getLblMessage();	
 
 			if (CommUtil.isMatchByReg(lblMessage.getText(), "There are item\\(s\\) received against this PO, you cannot cancel\\.")) {
-				CommUtil.logger.info(POMngtAction.class.getName() + " > Msg: There are item(s) received against this PO, you cannot cancel.");
+				CommUtil.logger.info(" > Msg: There are item(s) received against this PO, you cannot cancel.");
 				ret = "1";
 			} else if (CommUtil.isMatchByReg(lblMessage.getText(), "This is associated with a repair order and cannot be canceled\\.")) {
-				CommUtil.logger.info(POMngtAction.class.getName() + " > Msg: This is associated with a repair order and cannot be canceled.");
+				CommUtil.logger.info(" > Msg: This is associated with a repair order and cannot be canceled.");
 				ret = "2";			
 			}
 		} else {
@@ -116,7 +116,7 @@ public class POMngtAction {
 					WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
 
 					if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "PO delete successfully\\.")) {
-						CommUtil.logger.info(POMngtAction.class.getName() + " > PO delete successfully.");
+						CommUtil.logger.info(" > PO delete successfully.");
 						ret = "0";
 					}
 				}

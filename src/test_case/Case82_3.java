@@ -5,8 +5,6 @@ import java.util.HashMap;
 import org.openqa.selenium.WebDriver;
 
 import action_lib.common_action.CommonAction;
-import action_lib.cst_main.CST_MainAction;
-import action_lib.index.IndexPageAction;
 import action_lib.odr_mngt.POMngtAction;
 import config.TestSetting;
 import script_lib.CommUtil;
@@ -16,11 +14,8 @@ public class Case82_3 {
 		
 		String retVal = "-1";
 			
-		CommUtil.logger.info(Case82_3.class.getName() + " > Login");	
-		IndexPageAction idxpage = new IndexPageAction(webdriver);
-		idxpage.login();
-		
-		CommUtil.logger.info(Case82_3.class.getName() + " > SearchPO");	
+	
+		CommUtil.logger.info(" > SearchPO");	
 		HashMap<String, String> InputObj = new HashMap<String, String>();
 		InputObj.put("SearchProjectCode", TestSetting.Project);
 		InputObj.put("SearchCustomerPO", TestSetting.RepairPONum);		
@@ -33,10 +28,7 @@ public class Case82_3 {
 			
 		}
 
-		CommUtil.logger.info(Case82_3.class.getName() + " > Logout");	
-		CST_MainAction mainpage = new CST_MainAction(webdriver);
-		mainpage.logout();
-		
+	
 		return retVal;
 	}
 }

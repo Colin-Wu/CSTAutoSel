@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import action_lib.cst_main.CST_MainAction;
+import action_lib.index.IndexPageAction;
 import junit.framework.TestCase;
 import script_lib.CommUtil;
 import script_lib.SeleniumUtil;
@@ -44,6 +45,10 @@ public class TestSet extends TestCase{
 		
 		int caseidx = -1;
 		
+		CommUtil.logger.info(caseid + " > Login");	
+		IndexPageAction idxpage = new IndexPageAction(webdriver);
+		idxpage.login();
+		
 		try {
 			
 			caseidx = CommUtil.getCaselistIdxByCasename(caseid);
@@ -61,7 +66,9 @@ public class TestSet extends TestCase{
 				CommUtil.setResultToCaselist(caseidx, ResultFail);	
 				CommUtil.logger.info(testid + " retVal: " + retVal + " result: " + ResultFail);					
 			}
-
+			CommUtil.logger.info(caseid + " > Logout");	
+			CST_MainAction mainpage = new CST_MainAction(webdriver);
+			mainpage.logout();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

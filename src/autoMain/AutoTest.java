@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 
 import org.openqa.selenium.WebDriver;
 
+import action_lib.index.IndexPageAction;
 import config.TestSetting;
 import junit.framework.TestCase;
 import script_lib.CommUtil;
@@ -50,6 +51,11 @@ public class AutoTest extends TestCase{
 				ExcelUtil.updateExcelResult();
 	        } else {
 	        	WebDriver webdriver = TestSetting.openBrowser();
+	        	
+	        	// Login
+	    		IndexPageAction idxpage = new IndexPageAction(webdriver);
+	    		idxpage.login();
+	    		
 	        	//test_case.Case82_1
 	        	System.out.println("Case name: " + TestSetting.DebugCase);
 	        	Class<?> classType = Class.forName(TestSetting.DebugCase);
