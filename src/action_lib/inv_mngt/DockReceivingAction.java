@@ -146,6 +146,8 @@ public class DockReceivingAction {
 			editDetaillink.click();
 		}
 		
+		SeleniumUtil.waitPageRefresh(editDetaillink);
+		
 		boolean isLblMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblErrMessageLocator(), 0);
 		
 		if (isLblMsgexist) {
