@@ -12,6 +12,7 @@ public class DockReceivingObj {
 
 	By BtnNewDockRcvLocator = By.xpath(".//input[@id='ContentPlaceHolder1_btnNewDockRcv']");	
 	By BtnSaveLocator = By.xpath(".//input[@id='ContentPlaceHolder1_btnSave']");	
+	By BtnSearchLocator = By.xpath(".//input[@id='ContentPlaceHolder1_btnSearch']");	
 
 	By TxtTrackingNumberLocator = By.xpath(".//input[@id='ContentPlaceHolder1_rptNew_txtTrackingNumber_0']");
 	By TxtPONumberLocator = By.xpath(".//input[@id='ContentPlaceHolder1_rptNew_txtPONumber_0']");
@@ -19,13 +20,66 @@ public class DockReceivingObj {
 	By TxtBoxCountLocator = By.xpath(".//input[@id='ContentPlaceHolder1_rptNew_txtBoxCount_0']");
 	By TxtPalletCountLocator = By.xpath(".//input[@id='ContentPlaceHolder1_rptNew_txtPalletCount_0']");
 
+	By TxtSearchProjectCodeLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtProjectCode']");
+	By TxtSearchPONumLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtPONumber']");
+	By TxtSearchTrackNumLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtTrackingNumber']");
+
+	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_gv_Entities']");	
+	By linkEditDetailLocator = By.xpath(".//a[text()='Edit Details']");
+
+	
 	By SelProjectCodeLocator = By.xpath(".//select[@id='ContentPlaceHolder1_rptNew_ddlCustomerProject_0']");
 
 	By LblSuccessMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccessNew']");	
+	By LblErrMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblError']");	
 
+	
+	
 	public DockReceivingObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
+	}
+	public WebElement getLblErrMessage() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(LblErrMessageLocator);
+
+		return retEle;
+	}
+	public WebElement getTxtSearchProjectCode() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TxtSearchProjectCodeLocator);
+
+		return retEle;
+	}
+	public WebElement getTxtSearchPONum() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TxtSearchPONumLocator);
+
+		return retEle;
+	}
+	public WebElement getTxtSearchTrackNum() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TxtSearchTrackNumLocator);
+
+		return retEle;
+	}
+	public WebElement getTblSearchResult() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TblSearchResultLocator);
+
+		return retEle;
+	}
+	public WebElement getBtnSearch() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnSearchLocator);
+
+		return retEle;
 	}
 	public WebElement getLblSuccessMessage() throws NoSuchElementException  {
 		WebElement retEle = null;
@@ -116,5 +170,26 @@ public class DockReceivingObj {
 	}
 	public By getLblSuccessMessageLocator() {
 		return LblSuccessMessageLocator;
+	}
+	public By getBtnSearchLocator() {
+		return BtnSearchLocator;
+	}
+	public By getTxtSearchProjectCodeLocator() {
+		return TxtSearchProjectCodeLocator;
+	}
+	public By getTxtSearchPONumLocator() {
+		return TxtSearchPONumLocator;
+	}
+	public By getTxtSearchTrackNumLocator() {
+		return TxtSearchTrackNumLocator;
+	}
+	public By getTblSearchResultLocator() {
+		return TblSearchResultLocator;
+	}
+	public By getLinkEditDetailLocator() {
+		return linkEditDetailLocator;
+	}
+	public By getLblErrMessageLocator() {
+		return LblErrMessageLocator;
 	}	
 }

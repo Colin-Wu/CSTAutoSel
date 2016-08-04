@@ -80,6 +80,17 @@ public class TestSet extends TestCase{
 
     }
 	@Test
+	public void test82_4() {
+		
+		String retVal = "-1";
+		String expectRet = "1";	
+		String caseid = "82_4";
+		
+		retVal = runCase(caseid, webdriver, expectRet);
+		
+		assertEquals(expectRet,retVal);
+	}
+	@Test
 	public void test82_3() {
 		
 		String retVal = "-1";
