@@ -23,4 +23,34 @@ public class OrderIndexAction {
 		cmdPOManagement.click();
 		
 	}
+	
+      public void GotoOrdAdmin () throws NoSuchElementException {
+		
+		OrderIndexObj ordIdxObj = new OrderIndexObj(webdriver);
+	
+		WebElement cmdOrderAdmin = ordIdxObj.getCmdOrderAdmin();
+
+		cmdOrderAdmin.click();
+		
+	  }
+
+      public void GotoOrdUpdate () throws NoSuchElementException {
+	
+	  OrderIndexObj ordIdxObj = new OrderIndexObj(webdriver);
+
+	  WebElement cmdOrderUpdate = ordIdxObj.getCmdOrderUpdate();
+
+	  cmdOrderUpdate.click();
+	
+    }
+
+     public void GotoTmpltAdmin () throws NoSuchElementException {
+	
+	 OrderIndexObj ordIdxObj = new OrderIndexObj(webdriver);
+
+	 WebElement cmdTemplateAdmin = ordIdxObj.getCmdTemplateAdmin();
+
+	 cmdTemplateAdmin.click();
+	
+    }
 }
