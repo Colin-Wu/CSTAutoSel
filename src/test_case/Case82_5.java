@@ -38,7 +38,7 @@ public class Case82_5 {
 		 objReceivingPutawayObj.SearchPutaway(InputObj);
 		 CommUtil.logger.info(" > Calling SavetoPutawayready.... ");
 		 
-		// objReceivingPutawayObj.SaveToPutaway();
+		/// objReceivingPutawayObj.SaveToPutaway();
 		 
 		 objReceivingPutawayObj.SaveToPutawayready("0000");
 		/*HashMap<String, String> InputObj = new HashMap<String, String>();
