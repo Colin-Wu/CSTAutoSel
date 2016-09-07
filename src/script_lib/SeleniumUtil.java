@@ -85,7 +85,7 @@ public class SeleniumUtil {
 		
 		int retRow = 0;
 		
-		List<WebElement> rows = Tbl.findElements(By.tagName("tr"));  
+		List<WebElement> rows = Tbl.findElements(By.tagName("./tr"));  
 	
 		retRow = rows.size();
 		return retRow;
@@ -232,7 +232,7 @@ public class SeleniumUtil {
 	public static boolean isSelectHasOption (Select selectList, String Val) {
 		
         boolean flag = false; 
-		List<WebElement> options = selectList.getAllSelectedOptions();
+		List<WebElement> options = selectList.getOptions();
 		for (WebElement option : options) {
 			if (CommUtil.isMatchByReg(option.getText(), Val)) {
 				flag = true;
