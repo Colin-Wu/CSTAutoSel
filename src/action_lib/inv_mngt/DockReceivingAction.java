@@ -22,6 +22,107 @@ public class DockReceivingAction {
 		this.webdriver = webdriver;
 	}
 	
+	public HashMap<String, String> DetailReceiving(HashMap<String, ?> InputObj) throws NoSuchElementException {
+	
+		HashMap<String, String> RetObj = new HashMap<String, String>();
+		RetObj.put("RetVal","");
+		RetObj.put("PalletID", "");
+		
+		String inPartNum = InputObj.get("PartNum").toString();
+		String inQty = InputObj.get("Qty").toString();
+		String inSN = InputObj.get("SN").toString();
+		String inDisposition = InputObj.get("Disposition").toString();
+		
+		DockReceivingObj Obj = new DockReceivingObj(webdriver);
+		WebElement TxtPartNum = Obj.getTxtPartNum();
+		TxtPartNum.sendKeys(inPartNum);
+		
+		WebElement TxtQty = Obj.getTxtQty();
+		TxtQty.sendKeys(inQty);
+		
+		Select CmbDisposition = Obj.getCmbDetailReceiveDisposition();
+		boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbDisposition, inDisposition);
+		 
+		if (!isHasVal) {
+	      CommUtil.logger.info(" > Disposition option not found in UI.");
+	      RetObj.put("PalletID","");
+		  RetObj.put("RetVal", "-1");
+		  return RetObj;
+		}
+		
+		CmbDisposition.selectByVisibleText(inDisposition); 
+		WebElement BtnCreatePalletID = Obj.getBtnCreatePalletID();
+		BtnCreatePalletID.click();
+		
+		SeleniumUtil.waitPageRefresh(BtnCreatePalletID);
+        
+		WebElement BtnDialogBoxYes = Obj.getBtnYesDialogBox();
+		BtnDialogBoxYes.click();
+		SeleniumUtil.waitPageRefresh(BtnDialogBoxYes);
+		
+		WebElement BtnGo = Obj.getBtnGo();
+		BtnGo.click();
+		SeleniumUtil.waitPageRefresh(BtnGo);
+		
+        WebElement tblResult = Obj.getTblDetailReceivingINVParts();
+		
+		int tblRow = SeleniumUtil.getTableRows(tblResult);
+		
+		CommUtil.logger.info("Number of Rows : " + tblRow);
+		// Iterate over the rows set the UniqueSerialNum 
+		//
+		//
+        //		
+		// Iterate over the rows set the UniqueSerialNum 
+		
+		/*WebElement BtnSave = Obj.getBtnSaveDetailReceiving();
+		BtnSave.click();
+		SeleniumUtil.waitPageRefresh(BtnSave);*/
+		
+		return RetObj;
+	}
+	
+	
+	public String DocReceivingGoToDetail(String TrackNum) throws NoSuchElementException{
+		String RetValue = "-1";	
+		DockReceivingObj Obj = new DockReceivingObj(webdriver);
+		
+		WebElement TxtTrackingNumber = Obj.getTxtTrackNum();
+		TxtTrackingNumber.sendKeys(TrackNum);
+		
+		
+		WebElement BtnSerach = Obj.getBtnSearch();
+		BtnSerach.click();
+		SeleniumUtil.waitPageRefresh(BtnSerach);
+		
+		WebElement tblDocReceivingResult = Obj.getTblSearchResult();
+		int tblRow = SeleniumUtil.getTableRows(tblDocReceivingResult);
+		
+		if(tblRow < 2){
+			RetValue= "-1";
+		}
+		
+		else{
+				WebElement BtnEditDetials = Obj.getBtnEditDetials();
+				BtnEditDetials.click();
+				SeleniumUtil.waitPageRefresh(BtnEditDetials);
+				
+				boolean isLblMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblErrMessageLocator(), 0);
+				
+				if(isLblMsgexist){
+					WebElement lblMessage = Obj.getLblErrMessage();	
+					CommUtil.logger.info("> Error Message : " + lblMessage.getText());
+					RetValue="1";
+			    }
+			    else{
+					RetValue="0";
+			    }
+		   }
+		
+		CommUtil.logger.info("Return Vale : "+RetValue);
+		return  RetValue;
+	}
+	
 	public String NewDocReceiving (HashMap<String, ?> InputObj) throws NoSuchElementException {
 		//RetVal:-1:error;0: successful;1:Project code not found in the list
 		String ret = "-1";	

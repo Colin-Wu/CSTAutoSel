@@ -23,7 +23,7 @@ public class OrderIndexAction {
 		cmdPOManagement.click();
 		
 	}
-	
+	 
       public void GotoOrdAdmin () throws NoSuchElementException {
 		
 		OrderIndexObj ordIdxObj = new OrderIndexObj(webdriver);
