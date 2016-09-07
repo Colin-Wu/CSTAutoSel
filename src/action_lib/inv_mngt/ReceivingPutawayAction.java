@@ -22,8 +22,6 @@ public class ReceivingPutawayAction {
 	}
 
 	public String SearchPutaway(HashMap<String, ?> InputObj) throws NoSuchElementException {
-	
-		
 		String IsFound = "-1";	
 		String Status = InputObj.get("Status").toString();
 		String SN = InputObj.get("SN").toString();
@@ -50,21 +48,10 @@ public class ReceivingPutawayAction {
 		
 		boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbStatus, Status);
 		
-		SeleniumUtil.waitPageRefresh(TxtSerialNum);
+		//SeleniumUtil.waitPageRefresh(TxtSerialNum);
 		
-		//boolean isHasVal = false;
-		
-		/*List<WebElement> options = CmbStatus.getOptions();
-    	for (WebElement option : options) {
-    		//if(option.getText().equals(Status))
-    		if (CommUtil.isMatchByReg(option.getText(), Status))
-    		{
-    			isHasVal=true;
-    			CommUtil.logger.info(" > Status found in UI");
-    			break;
-    		}
-    	}*/
-		
+		CommUtil.logger.info(" > Option " + Status + " Found");
+			
 		if (!isHasVal) {
 			CommUtil.logger.info(" > Status not found in UI");
 			IsFound = "-1";
@@ -75,7 +62,7 @@ public class ReceivingPutawayAction {
 		WebElement BtnSearch = Obj.getBtnSearch();
 		BtnSearch.click();
 		
-		SeleniumUtil.waitPageRefresh(BtnSearch);
+		//SeleniumUtil.waitPageRefresh(BtnSearch);
 		
 		WebElement tblResult = Obj.getTblSearchResult();
 		
@@ -102,15 +89,8 @@ public class ReceivingPutawayAction {
 		
 		CommUtil.logger.info(" > Finish Button clicked : ");
 		
-		//boolean isLblSuccessMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblPutAwayReadySuccessMessageLocator(), 0);
-        boolean isLblSuccessMsgexist =false;
-    	
-    	if(webdriver.findElements(By.id(Obj.getLblSuccessId())).size() != 0)
-    	{
-    		isLblSuccessMsgexist = true;
-    		CommUtil.logger.info(" > Success Message Label: " + isLblSuccessMsgexist );
-    	}
-		
+		boolean isLblSuccessMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblPutAwayReadySuccessMessageLocator(), 0);
+       
     	CommUtil.logger.info(" > Success Message Label : " + isLblSuccessMsgexist );
     	
 		if (isLblSuccessMsgexist) {
@@ -123,15 +103,8 @@ public class ReceivingPutawayAction {
 			}
 		 }
 		
-		 // This is just for logging purpose. - Code block start 
-		  boolean isLblErrorMsgexist =false;
+		boolean isLblErrorMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblErrorMesgLocator(), 0);
 		  
-	      if(webdriver.findElements(By.id(Obj.getLblErrorId())).size() != 0)
-	    	{
-	    		isLblErrorMsgexist = true;
-	    		CommUtil.logger.info(" > Error Label: " + isLblErrorMsgexist );
-	    	}
-	      
 		  if (isLblErrorMsgexist) {
 				
 				WebElement lblErrorMessage = Obj.getLblErrorMessageLocation();	
@@ -174,17 +147,10 @@ public class ReceivingPutawayAction {
         	WebElement ChkDefaultBtnLocation = Obj.getChkDefaultLocation();
         	ChkDefaultBtnLocation.click();
         	
-        	/*boolean BtnSaveAllexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getBtnSaveAllLocator(),0);
-        	CommUtil.logger.info(" > BtnSaveAllexist: " + BtnSaveAllexist );*/
+        	SeleniumUtil.waitPageRefresh(ChkDefaultBtnLocation);
+        	boolean BtnSaveAllexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getBtnSaveAllLocator(),0);
+        	CommUtil.logger.info(" > BtnSaveAllexist: " + BtnSaveAllexist );
         	 
-        	boolean BtnSaveAllexist =false;
-        	
-        	if(webdriver.findElements(By.id(Obj.getBtnSaveAllId())).size() != 0)
-        	{
-        		BtnSaveAllexist = true;
-        		CommUtil.logger.info(" > BtnSaveAllexist: " + BtnSaveAllexist );
-        	}
-        	
         	if(BtnSaveAllexist)
         	{
         		WebElement BtnSaveAll = Obj.getBtnSaveAllLocation();
@@ -198,14 +164,8 @@ public class ReceivingPutawayAction {
         	return retVal;
         }
          
-        // boolean isLblSuccessMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblPutAwayReadySuccessMessageLocator(), 0);
-        boolean isLblSuccessMsgexist =false;
-    	if(webdriver.findElements(By.id(Obj.getLblSuccessId())).size() != 0)
-    	{
-    		isLblSuccessMsgexist = true;
-    		CommUtil.logger.info(" > Success label: " + isLblSuccessMsgexist );
-    	}
-    	
+        boolean isLblSuccessMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblPutAwayReadySuccessMessageLocator(), 0);
+        
 		if (isLblSuccessMsgexist) {
 			
 			WebElement lblSuccessMessage = Obj.getSuccessMessagePutAwayReady();	
@@ -218,14 +178,8 @@ public class ReceivingPutawayAction {
 			}
 		}
 		
-		// boolean isLblErrorMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblErrorMesgLocator(), 0);
+		   boolean isLblErrorMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblErrorMesgLocator(), 0);
 		
-		   boolean isLblErrorMsgexist =false;
-	    	if(webdriver.findElements(By.id(Obj.getLblErrorId())).size() != 0)
-	    	{
-	    		isLblErrorMsgexist = true;
-	    		CommUtil.logger.info(" > Error Label: " + isLblErrorMsgexist );
-	    	}
 			if (isLblErrorMsgexist) {
 				
 				WebElement lblErrorMessage = Obj.getLblErrorMessageLocation();	

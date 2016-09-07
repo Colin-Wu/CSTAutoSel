@@ -33,12 +33,97 @@ public class DockReceivingObj {
 	By LblSuccessMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccessNew']");	
 	By LblErrMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblError']");	
 
+	By TxtTranckNumLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_txtTrackingNumber']");
 	
+	By BtnEditDetailsLocator =  By.xpath(".//a[@id='ContentPlaceHolder1_gv_Entities_lbtnEditDetails_0']");
 	
+	 By txtPartNumLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_txtPartNumberForSearch']");
+     By txtQtyLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_txtSQty']");
+	 By CmbDetailReceiveDispositionLocator =By.xpath(".//select[@id='ContentPlaceHolder1_ucDetailReceiving_ddlDispostion']");
+	 By BtnCreatePalletIDLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnCreatePalletID']");
+	 By BtnGoLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnGo']");
+		
+	 By BtnYesDialogBoxLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_ccConfirmDialogBack_cmdYes']");
+		
+	 By TblDetailReceivingINVPartsLocator = By.xpath(".//table[@id='ContentPlaceHolder1_ucDetailReceiving_divINVParts']");
+		
+	 By BtnSaveDetailReceivingLocator =By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnSave']"); 
+		
 	public DockReceivingObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
 	}
+	
+	public WebElement getTblDetailReceivingINVParts() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(TblDetailReceivingINVPartsLocator);
+		return retEle;
+	}
+	
+	public WebElement getBtnSaveDetailReceiving() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(BtnSaveDetailReceivingLocator);
+		return retEle;
+	}
+	
+	public WebElement getBtnYesDialogBox() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(BtnYesDialogBoxLocator);
+		return retEle;
+	}
+	
+	public WebElement getBtnGo() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(BtnGoLocator);
+		return retEle;
+	}
+	
+	public WebElement getBtnCreatePalletID() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnCreatePalletIDLocator);
+
+		return retEle;
+	}
+	
+	public Select getCmbDetailReceiveDisposition() throws NoSuchElementException  {
+		Select retEle = null;
+		retEle = new Select(webdriver.findElement(CmbDetailReceiveDispositionLocator));
+		return retEle;
+	}
+	
+	public WebElement getTxtQty() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(txtQtyLocator);
+
+		return retEle;
+	}
+	
+	public WebElement getTxtPartNum() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(txtPartNumLocator);
+
+		return retEle;
+	}
+	
+	public WebElement getBtnEditDetials() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnEditDetailsLocator);
+
+		return retEle;
+	}
+	
+	public WebElement getTxtTrackNum() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TxtTranckNumLocator);
+
+		return retEle;
+	}
+	
 	public WebElement getLblErrMessage() throws NoSuchElementException  {
 		WebElement retEle = null;
 
@@ -46,6 +131,7 @@ public class DockReceivingObj {
 
 		return retEle;
 	}
+	
 	public WebElement getTxtSearchProjectCode() throws NoSuchElementException  {
 		WebElement retEle = null;
 

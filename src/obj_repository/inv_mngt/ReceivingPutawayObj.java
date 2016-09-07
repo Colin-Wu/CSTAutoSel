@@ -13,7 +13,7 @@ public class ReceivingPutawayObj {
 	By TxtProjectCodeLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtProjectCode']");
 	By TxtPalletIdLocator = By.xpath(".//input[@id='txtPalletID']");
 	By CmbStatusLocator = By.xpath(".//select[@id='ContentPlaceHolder1_ddlStatus']");
-	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_grvRecPutaways']");
+	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_grvRecPutaways']/tbody");
 	
 	By BtnSearchLocator = By.xpath(".//input[@id='cmdSearchPutaway']");
 	
