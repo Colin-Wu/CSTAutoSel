@@ -14,7 +14,7 @@ public class CreatePOObj {
 
 	By LinkNewPOlocator = By.xpath(".//a[@id='ContentPlaceHolder1_lbtnCreateNewPONumber']");
 
-	By TblPartListLocator = By.xpath(".//table[@id='tablePartList']");
+	By TblPartListLocator = By.xpath(".//table[@id='tablePartList']/tbody");
 	By TxtPartNumLocator = By.xpath(".//input[contains(@id,'ContentPlaceHolder1_rptPart_txtPartNumber_')]");
 	By TxtQtyLocator = By.xpath(".//input[contains(@id,'ContentPlaceHolder1_rptPart_txtQTY_')]");
 

@@ -25,7 +25,7 @@ public class SeleniumUtil {
 		
 		int retColIdx = -1;
 		
-		List<WebElement> rows = Tbl.findElements(By.tagName("tr"));  
+		List<WebElement> rows = Tbl.findElements(By.xpath("./tr"));  
 		
 		WebElement tblhead = rows.get(0);
 		
@@ -45,7 +45,7 @@ public class SeleniumUtil {
 		
 		int retRow = -1;
 		
-		List<WebElement> rows = Tbl.findElements(By.tagName("tr"));  
+		List<WebElement> rows = Tbl.findElements(By.xpath("./tr"));  
 
 		for (int i = 1; i < rows.size(); i++) {
 			WebElement tblrow = rows.get(i);
@@ -65,7 +65,7 @@ public class SeleniumUtil {
 		
 		WebElement retEle = null;
 		
-		List<WebElement> rows = Tbl.findElements(By.tagName("tr"));  
+		List<WebElement> rows = Tbl.findElements(By.xpath("./tr"));  
 		WebElement tblrow = rows.get(row);
 		
 		List<WebElement> cols = tblrow.findElements(By.tagName("td")); 
@@ -84,8 +84,8 @@ public class SeleniumUtil {
 	public static int getTableRows (WebElement Tbl) {
 		
 		int retRow = 0;
-		
-		List<WebElement> rows = Tbl.findElements(By.tagName("./tr"));  
+
+		List<WebElement> rows = Tbl.findElements(By.xpath("./tr"));  
 	
 		retRow = rows.size();
 		return retRow;

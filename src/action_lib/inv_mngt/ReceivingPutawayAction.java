@@ -46,18 +46,21 @@ public class ReceivingPutawayAction {
 		
 		Select CmbStatus = Obj.getCmbStatus(); 
 		
-		boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbStatus, Status);
+		if (!Status.equals("")) {
 		
-		//SeleniumUtil.waitPageRefresh(TxtSerialNum);
-		
-		CommUtil.logger.info(" > Option " + Status + " Found");
+			boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbStatus, Status);
 			
-		if (!isHasVal) {
-			CommUtil.logger.info(" > Status not found in UI");
-			IsFound = "-1";
-			return IsFound;
+			//SeleniumUtil.waitPageRefresh(TxtSerialNum);
+			
+			CommUtil.logger.info(" > Option " + Status + " Found");
+				
+			if (!isHasVal) {
+				CommUtil.logger.info(" > Status not found in UI");
+				IsFound = "-1";
+				return IsFound;
+			}
+			CmbStatus.selectByVisibleText(Status);
 		}
-		CmbStatus.selectByVisibleText(Status);
 		
 		WebElement BtnSearch = Obj.getBtnSearch();
 		BtnSearch.click();
