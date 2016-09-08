@@ -15,7 +15,7 @@ public class InventoryLookupObj {
 	By TxtProjectCodeLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtProjectCode']");
 	By CmbStatusLocator = By.xpath(".//select[@id='ContentPlaceHolder1_ddlStatusFilter']");
 	By CmbStockGroupLocator = By.xpath(".//select[@id='ContentPlaceHolder1_ddlStockFilter']");
-	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_grvInventory']");
+	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_grvInventory']/tbody");
 	
 	By BtnSearchLocator = By.xpath(".//input[@id='ContentPlaceHolder1_cmdSearchInv']");
 	
