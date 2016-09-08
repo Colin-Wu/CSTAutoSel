@@ -24,7 +24,7 @@ public class DockReceivingObj {
 	By TxtSearchPONumLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtPONumber']");
 	By TxtSearchTrackNumLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtTrackingNumber']");
 
-	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_gv_Entities']");	
+	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_gv_Entities']/tbody");	
 	By linkEditDetailLocator = By.xpath(".//a[text()='Edit Details']");
 
 	
@@ -45,7 +45,7 @@ public class DockReceivingObj {
 		
 	 By BtnYesDialogBoxLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_ccConfirmDialogBack_cmdYes']");
 		
-	 By TblDetailReceivingINVPartsLocator = By.xpath(".//table[@id='ContentPlaceHolder1_ucDetailReceiving_divINVParts']");
+	 By TblDetailReceivingINVPartsLocator = By.xpath(".//table[@id='ContentPlaceHolder1_ucDetailReceiving_divINVParts']/tbody");
 		
 	 By BtnSaveDetailReceivingLocator =By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnSave']"); 
 		

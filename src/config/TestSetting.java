@@ -45,7 +45,17 @@ public class TestSetting {
 	public static WebDriver driver;	
 	public static ArrayList<Object> WebDriverList = new ArrayList<Object>();
 	public static ArrayList<HashMap<String, String>> caselist;
+
 	
+	public static String OrdType_Repair = "Repair";	
+	public static String OrdAttr_ExtRepair = "External repair of defective";	
+	public static String OrdAttr_ExtRepairWithHP = "External repair of defective With HP triage";	
+	public static String OrdAttr_ExtRepairNoHP = "External repair of defective/no HP triage";	
+	public static String OrdAttr_IntRepair = "Internal repair of defective";	
+	public static String OrdAttr_IntRepairDFS = "Internal Repair could be DFS";	
+	public static String OrdAttr_RepairReturn = "Repair and Return";	
+	public static String OrdAttr_RepairStock = "Repair and Stock";	
+
 	
 	public static void initTest(){
 		

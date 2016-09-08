@@ -14,7 +14,7 @@ public class POMngtObj {
 	By BtnNewPOLocator = By.xpath(".//input[@id='ContentPlaceHolder1_btnAdd']");	
 	By BtnConfirmYesLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogQtyAvailable_cmdYes']");	
 	
-	By TblSearchResultLocator = By.xpath(".//table[@id='tablePartList']");	
+	By TblSearchResultLocator = By.xpath(".//table[@id='tablePartList']/tbody");	
 	By linkDelLocator = By.xpath(".//a[text()='Delete']");
 	
 	By LblMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblError']");	
