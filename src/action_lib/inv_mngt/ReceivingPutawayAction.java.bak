@@ -2,7 +2,7 @@ package action_lib.inv_mngt;
 
 import java.util.HashMap;
 
-
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,26 +31,18 @@ public class ReceivingPutawayAction {
 		
 		ReceivingPutawayObj Obj = new ReceivingPutawayObj(webdriver);
 		WebElement TxtProjectCode = Obj.getTxtProjectCode();
-		TxtProjectCode.clear();
 		TxtProjectCode.sendKeys(ProjectCode);
 		
+		CommUtil.logger.info(" > Project Code ");
+		
 		WebElement TxtPalletId = Obj.getTxtPalletId();
-		TxtPalletId.clear();
 		TxtPalletId.sendKeys(PalletID);
 		
 		WebElement TxtBoxId = Obj.getTxtBoxId();
-		TxtBoxId.clear();
 		TxtBoxId.sendKeys(BoxID);
 		
 		WebElement TxtSerialNum = Obj.getTxtSerialNum();
-		TxtSerialNum.clear();
 		TxtSerialNum.sendKeys(SN);
-		
-		CommUtil.logger.info(" > Project Code " + ProjectCode);
-		CommUtil.logger.info(" > Status "+Status);
-		CommUtil.logger.info(" > SN "+SN);
-		CommUtil.logger.info(" > PalletID "+PalletID);
-		CommUtil.logger.info(" > BoxID "+BoxID);
 		
 		Select CmbStatus = Obj.getCmbStatus(); 
 		
@@ -73,16 +65,14 @@ public class ReceivingPutawayAction {
 		WebElement BtnSearch = Obj.getBtnSearch();
 		BtnSearch.click();
 		
-		SeleniumUtil.waitPageRefresh(BtnSearch);
+		//SeleniumUtil.waitPageRefresh(BtnSearch);
 		
 		WebElement tblResult = Obj.getTblSearchResult();
 		
         int tblRow = SeleniumUtil.getTableRows(tblResult);
 		
-        CommUtil.logger.info(" > Table result " +tblRow );
-        
 		if (tblRow > 1) {
-			CommUtil.logger.info(" > Putaway is found."+ tblRow);
+			CommUtil.logger.info(" > Putaway is found.");
 			IsFound = "1";
 		} else {
 			CommUtil.logger.info(" > Putaway is not Found.");
@@ -112,7 +102,7 @@ public class ReceivingPutawayAction {
 
 			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Saved successfully\\.")) {
 				CommUtil.logger.info(" > Saved successfully\\.");
-				retVal = "0";
+				retVal = "1";
 			}
 		 }
 		
@@ -185,7 +175,7 @@ public class ReceivingPutawayAction {
 			
 			CommUtil.logger.info("> "+lblSuccessMessage.getText());
 
-			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Save successfully")  || CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Saved successfully\\.")) {
+			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Save successfully")) {
 				CommUtil.logger.info(" > Save successfully.");
 				retVal = "0";
 			}

@@ -39,8 +39,6 @@ public class TestSetting {
 	public static String Dbpass = "";	
 	public static String DriverName = "";	
 	public static String DebugCase = "";	
-	public static String StockLocation="";
-	public static String StockGroup="";
 
 	public static int RunThread=1;
 	
@@ -134,8 +132,6 @@ public class TestSetting {
 			TestSetting.RepairPONum = prop.getProperty("RepairPONum");
 			TestSetting.ShipVia = prop.getProperty("ShipVia");
 			TestSetting.ProjectPart1 = prop.getProperty("ProjectPart1");
-			TestSetting.StockLocation=prop.getProperty("StockLocation");
-			TestSetting.StockGroup=prop.getProperty("StockGroup"); 
 			
 			
 			CommUtil.logger.info("SiteURL="+TestSetting.SiteURL);
@@ -161,8 +157,6 @@ public class TestSetting {
 			CommUtil.logger.info("RepairPONum="+TestSetting.RepairPONum);
 			CommUtil.logger.info("ShipVia="+TestSetting.ShipVia);
 			CommUtil.logger.info("ProjectPart1="+TestSetting.ProjectPart1);
-			CommUtil.logger.info("StockLocation="+TestSetting.StockLocation);
-			CommUtil.logger.info("StockGroup="+TestSetting.StockGroup);
 			
 		  } catch (IOException e) { 
 		   e.printStackTrace();    

@@ -26,7 +26,7 @@ public class DockReceivingObj {
 
 	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_gv_Entities']/tbody");	
 	By linkEditDetailLocator = By.xpath(".//a[text()='Edit Details']");
-	
+
 	
 	By SelProjectCodeLocator = By.xpath(".//select[@id='ContentPlaceHolder1_rptNew_ddlCustomerProject_0']");
 
@@ -44,37 +44,19 @@ public class DockReceivingObj {
 	 By BtnGoLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnGo']");
 		
 	 By BtnYesDialogBoxLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_ccConfirmDialogBack_cmdYes']");
-	 By TblDetailReceivingINVPartsLocator = By.xpath(".//div[@id='ContentPlaceHolder1_ucDetailReceiving_divINVParts']/table/tbody");
+		
+	 By TblDetailReceivingINVPartsLocator = By.xpath(".//table[@id='ContentPlaceHolder1_ucDetailReceiving_divINVParts']/tbody");
+		
 	 By BtnSaveDetailReceivingLocator =By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnSave']"); 
-	 By LblSuccessMessageDetailReceivingLocator = By.xpath(".//span[@id='ContentPlaceHolder1_ucDetailReceiving_lblSuccess']");	
-	 By txtPalletIdLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_txtPalletID']");
 		
 	public DockReceivingObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
 	}
 	
-	public WebElement gettxtPalletId() throws NoSuchElementException  {
-		WebElement retEle = null;
-		retEle = webdriver.findElement(txtPalletIdLocator);
-		return retEle;
-	}
-	
-	public WebElement getLblSuccessDetailReceivingMessage() throws NoSuchElementException  {
-		WebElement retEle = null;
-		retEle = webdriver.findElement(LblSuccessMessageDetailReceivingLocator);
-		return retEle;
-	}
-	
 	public WebElement getTblDetailReceivingINVParts() throws NoSuchElementException  {
 		WebElement retEle = null;
 		retEle = webdriver.findElement(TblDetailReceivingINVPartsLocator);
-		return retEle;
-	}
-	
-	public WebElement getUniqueSerialNum(int index)throws NoSuchElementException  {
-		WebElement retEle = null;
-		retEle = webdriver.findElement(By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_rptINVParts_txtSerialNumber_"+index+"']"));
 		return retEle;
 	}
 	
@@ -104,9 +86,9 @@ public class DockReceivingObj {
 		return retEle;
 	}
 	
-	public WebElement getCmbDetailReceiveDisposition() throws NoSuchElementException  {
-		WebElement retEle = null;
-		retEle = webdriver.findElement(CmbDetailReceiveDispositionLocator);
+	public Select getCmbDetailReceiveDisposition() throws NoSuchElementException  {
+		Select retEle = null;
+		retEle = new Select(webdriver.findElement(CmbDetailReceiveDispositionLocator));
 		return retEle;
 	}
 	
@@ -274,10 +256,6 @@ public class DockReceivingObj {
 	}
 	public By getLblSuccessMessageLocator() {
 		return LblSuccessMessageLocator;
-	}
-	
-	public By getLblSuccessMessageDetailReceivingLocator() {
-		return LblSuccessMessageDetailReceivingLocator;
 	}
 	public By getBtnSearchLocator() {
 		return BtnSearchLocator;
