@@ -3,7 +3,6 @@ package action_lib.inv_mngt;
 
 import java.util.HashMap;
 
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -41,8 +40,7 @@ public class DockReceivingAction {
 		WebElement TxtQty = Obj.getTxtQty();
 		TxtQty.sendKeys(inQty);
 		
-		WebElement WebEleCmbDisposition = Obj.getCmbDetailReceiveDisposition();
-		Select CmbDisposition=new Select(WebEleCmbDisposition);
+		Select CmbDisposition = Obj.getCmbDetailReceiveDisposition();
 		boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbDisposition, inDisposition);
 		 
 		if (!isHasVal) {
@@ -72,34 +70,16 @@ public class DockReceivingAction {
 		
 		CommUtil.logger.info("Number of Rows : " + tblRow);
 		// Iterate over the rows set the UniqueSerialNum 
+		//
+		//
+        //		
+		// Iterate over the rows set the UniqueSerialNum 
 		
-		if(tblRow >= 2)
-		{
-			for(int index=0; index< tblRow-1; index++)
-			{
-				 WebElement SlNumElement= Obj.getUniqueSerialNum(index);
-				 SlNumElement.sendKeys(inSN+index);	
-			}
-		}
-        
-		WebElement BtnSave = Obj.getBtnSaveDetailReceiving();
+		/*WebElement BtnSave = Obj.getBtnSaveDetailReceiving();
 		BtnSave.click();
-		SeleniumUtil.waitPageRefresh(BtnSave);
+		SeleniumUtil.waitPageRefresh(BtnSave);*/
 		
-		boolean isLblMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblSuccessMessageDetailReceivingLocator(), 0);
-		if (isLblMsgexist) {
-			
-			WebElement lblSuccessMessage = Obj.getLblSuccessDetailReceivingMessage();	
-
-			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
-				CommUtil.logger.info(" > Dock Entry has been saved\\.");
-				 RetObj.put("PalletID",Obj.gettxtPalletId().getAttribute("value"));
-				 CommUtil.logger.info(" > Pallet ID"+ Obj.gettxtPalletId().getAttribute("value"));
-				 RetObj.put("RetVal", "0");
-			}
-		}
-		 CommUtil.logger.info(" > RetVal "+  RetObj.get("RetVal").toString());
-		 return RetObj;
+		return RetObj;
 	}
 	
 	
@@ -158,7 +138,6 @@ public class DockReceivingAction {
 		WebElement BtnNewDockRcv = Obj.getBtnNewDockRcv();
 		BtnNewDockRcv.click();
 		
-		CommUtil.logger.info("clicked..");
 		SeleniumUtil.waitPageRefresh(BtnNewDockRcv);
 	
 		WebElement TxtTrackingNumber = Obj.getTxtTrackingNumber();

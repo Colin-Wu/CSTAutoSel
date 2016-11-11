@@ -1,8 +1,6 @@
 SiteURL=http://w08kcst03rpt.americas.hpqcorp.net:7777/index.aspx
 UserName=AutoTest
 UserPassword=cst2016!
-#UserName=SPrabhu
-#UserPassword=sun143SAT!@#
 Project=UFT
 StandardPONum=UFT51533
 RepairPONum=PO201601271423
