@@ -48,12 +48,19 @@ public class DockReceivingObj {
 	 By BtnSaveDetailReceivingLocator =By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnSave']"); 
 	 By LblSuccessMessageDetailReceivingLocator = By.xpath(".//span[@id='ContentPlaceHolder1_ucDetailReceiving_lblSuccess']");	
 	 By txtPalletIdLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_txtPalletID']");
-		
+
+	 By BtnNextLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnNext']");
+
+	 
 	public DockReceivingObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
 	}
-	
+	public WebElement getBtnNext() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(BtnNextLocator);
+		return retEle;
+	}	
 	public WebElement gettxtPalletId() throws NoSuchElementException  {
 		WebElement retEle = null;
 		retEle = webdriver.findElement(txtPalletIdLocator);
@@ -299,5 +306,8 @@ public class DockReceivingObj {
 	}
 	public By getLblErrMessageLocator() {
 		return LblErrMessageLocator;
+	}
+	public By getBtnNextLocator() {
+		return BtnNextLocator;
 	}	
 }

@@ -24,6 +24,15 @@ public class CST_MainAction {
 		CmdsignOut.click();
 		
 	}
+	public void MenuShipping () throws NoSuchElementException {
+		
+		CST_MainObj mainObj = new CST_MainObj(webdriver);
+	
+		WebElement CmdShipping = mainObj.getCmdShipping();
+
+		CmdShipping.click();
+		
+	}	
 	public void MenuInventory () throws NoSuchElementException {
 		
 		CST_MainObj mainObj = new CST_MainObj(webdriver);

@@ -1,7 +1,9 @@
 package action_lib.common_action;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -111,6 +113,7 @@ public class CommonAction {
 			cstMainaction.logout();
 		}
 		
+		CommUtil.logger.info(" > DocReceivingGoToDetail");
 		String OutRetVal=docReceiving.DocReceivingGoToDetail(inTrackNum);
 		
 		if(OutRetVal.equals("0"))
@@ -122,6 +125,7 @@ public class CommonAction {
 			CommUtil.logger.info("DocReceivingGoToDetail : Failed. Code:"+OutRetVal);
 		}
 
+		CommUtil.logger.info(" > DetailReceiving");
 		HashMap<String, String> InputObject = new HashMap<String, String>();
 		InputObject.put("PartNum",inPartNum);
 		InputObject.put("Qty", inQty);
@@ -145,7 +149,8 @@ public class CommonAction {
 	}
 	
 	
-    public HashMap<String, String> GetAvailablePart_CA(HashMap<String, ?> InputObj) throws NoSuchElementException
+    @SuppressWarnings("unchecked")
+	public ArrayList<HashMap<String, String>> GetAvailablePart_CA(HashMap<String, ?> InputObj) throws NoSuchElementException
     {
     	CommUtil.logger.info(" > GetAvailablePart_CA");
     	String inQty = InputObj.get("Qty").toString();
@@ -155,8 +160,9 @@ public class CommonAction {
     	String inPONum = "";
     	String inStatus = "PUTAWAY"; 
     	String inStockGroup = TestSetting.StockGroup; 
-    	String strBoxId="";
-    	String strSN="";
+/*    	String strBoxId="";
+    	String strSN="";*/
+    	ArrayList<HashMap<String, String>> rstArr = null;
     	
     	HashMap<String, String> RetObj = new HashMap<String, String>();
     	
@@ -179,12 +185,11 @@ public class CommonAction {
 		InputInventoryObject.put("SearchStatus", inStatus);
 		InputInventoryObject.put("StockGroup", inStockGroup);
 		InputInventoryObject.put("Qty", inQty);
-		HashMap<String, String>OutputInventoryLookup= inventoryLookupAction.SearchInventory(InputInventoryObject);
+		HashMap<Object, Object>OutputInventoryLookup= inventoryLookupAction.SearchInventory(InputInventoryObject);
     			
-        String outIsFound= OutputInventoryLookup.get("IsFound");
+        String outIsFound= (String) OutputInventoryLookup.get("IsFound");
         
-        if(outIsFound.equals("0"))
-        {
+        if(!outIsFound.equals("1")) {
         	GenerateStandardPart_CA(inQty); 
         	
         	mainpage= new CST_MainAction(webdriver);
@@ -195,27 +200,42 @@ public class CommonAction {
 			
         	OutputInventoryLookup= inventoryLookupAction.SearchInventory(InputInventoryObject);
         	outIsFound= OutputInventoryLookup.get("IsFound").toString();
-        	strBoxId=OutputInventoryLookup.get("BoxID").toString();
-        	strSN= OutputInventoryLookup.get("SN").toString();
         	
-        	if(!outIsFound.equals("1"))
-        	{
+        	if(!outIsFound.equals("1")) {
         		CommUtil.logger.info(">SearchInventory Failure. Code:" +outIsFound);
         		CST_MainAction cstMainaction = new CST_MainAction(webdriver);
         		CommUtil.logger.info(">Logging Out...");
     			cstMainaction.logout();
+        	} else {
+        		rstArr= (ArrayList<HashMap<String, String>>) OutputInventoryLookup.get("RstArr");       		
         	}
+        } else {
+        	rstArr= (ArrayList<HashMap<String, String>>) OutputInventoryLookup.get("RstArr"); 
+        	if (rstArr.size() < Integer.parseInt(inQty)) {
+            	GenerateStandardPart_CA(inQty); 
+            	
+            	mainpage= new CST_MainAction(webdriver);
+            	mainpage.MenuInventory();
+            	
+            	invIndexpage = new InvIndexAction(webdriver); 
+            	invIndexpage.GotoInventoryLookup();
+    			
+            	OutputInventoryLookup= inventoryLookupAction.SearchInventory(InputInventoryObject);
+            	outIsFound= OutputInventoryLookup.get("IsFound").toString();
+            	
+            	if(!outIsFound.equals("1")) {
+            		CommUtil.logger.info(">SearchInventory Failure. Code:" +outIsFound);
+            		CST_MainAction cstMainaction = new CST_MainAction(webdriver);
+            		CommUtil.logger.info(">Logging Out...");
+        			cstMainaction.logout();
+            	} else {
+            		rstArr= (ArrayList<HashMap<String, String>>) OutputInventoryLookup.get("RstArr");       		
+            	}        		
+        	}   	
+   	
         }
         
-        else
-        {
-        	strBoxId=OutputInventoryLookup.get("BoxID").toString();
-        	strSN= OutputInventoryLookup.get("SN").toString();
-        }
-        
-        RetObj.put("BoxID", strBoxId);
-    	RetObj.put("SN", strSN);
-    	return RetObj;
+    	return rstArr;
     }
     
     public void GenerateStandardPart_CA(String Qty) throws NoSuchElementException
@@ -262,17 +282,17 @@ public class CommonAction {
     public String GeneratePart_CA(HashMap<String, String> InputObj) throws NoSuchElementException{
     	
     	String inMode = InputObj.get("Mode").toString();
-    	CommUtil.logger.info("Mode"+inMode);
+    	CommUtil.logger.info("Mode:"+inMode);
     	String inProjCode = InputObj.get("ProjectCode").toString();
-    	CommUtil.logger.info(inProjCode);
+    	//CommUtil.logger.info(inProjCode);
     	String inPartNum = InputObj.get("PartNum").toString();
-    	CommUtil.logger.info(inPartNum);
+    	//CommUtil.logger.info(inPartNum);
     	String inQty = InputObj.get("Qty").toString();
-    	CommUtil.logger.info(inQty);
+    	//CommUtil.logger.info(inQty);
     	String inOrdNum = InputObj.get("OrdNum").toString();
-    	CommUtil.logger.info(inOrdNum);
+    	//CommUtil.logger.info(inOrdNum);
     	String inPONum = InputObj.get("PONum").toString(); 
-    	CommUtil.logger.info(inPONum);
+    	//CommUtil.logger.info(inPONum);
     	
       
         String vTrackNum=CommUtil.genDateTimeStamp(); 
@@ -291,11 +311,13 @@ public class CommonAction {
         InputObj.put("TrackNum", vTrackNum);
         InputObj.put("PONum", inPONum);
        
+        CommUtil.logger.info("Calling ReceiveToPutaway_CA");
         this.ReceiveToPutaway_CA(InputObj);
         return inPONum;
     }
     
-    public String ReceiveToPutaway_CA(HashMap<String, ?> InputObj) throws NoSuchElementException{
+    @SuppressWarnings("unchecked")
+	public ArrayList<HashMap<String, String>> ReceiveToPutaway_CA(HashMap<String, ?> InputObj) throws NoSuchElementException{
     	        
     	String inPONum = InputObj.get("PONum").toString();
     	//String inCarrier = InputObj.get("Carrier").toString();
@@ -311,14 +333,15 @@ public class CommonAction {
     	//String inDisposition = InputObj.get("Disposition").toString();
     	
     	String outIsFound = "-1";
-    	String outPartStatus = "";
+    	ArrayList<HashMap<String, String>> rstArr;
     	
     	
-    	 CommUtil.logger.info("ReceiveToPutaway_CA ...read inputs");
+    	CommUtil.logger.info("Calling ReceiveToDetailReceiving_CA");
+    	 //CommUtil.logger.info("ReceiveToPutaway_CA ...read inputs");
     	
     	String OutPalletID= this.ReceiveToDetailReceiving_CA(InputObj);
     	
-    	CommUtil.logger.info("Pallet ID" + OutPalletID);
+    	//CommUtil.logger.info("Pallet ID" + OutPalletID);
     	
     	if(!inQty.equals("1")) {
     		inSN = "";
@@ -332,15 +355,25 @@ public class CommonAction {
     	InputPutAway.put("Location",inLocation);
     	InputPutAway.put("PartNum",inPartNum);
     	InputPutAway.put("PONum",inPONum);
+    	InputPutAway.put("Qty",inQty);
     	
     	 CommUtil.logger.info("Calling PutawayToInv_CA  ...");
     	
-    	HashMap<String, String> OutputInvputaway=this.PutawayToInv_CA(InputPutAway);
+    	HashMap<Object, Object> OutputInvputaway=this.PutawayToInv_CA(InputPutAway);
     	outIsFound= OutputInvputaway.get("IsFound").toString();
-    	outPartStatus= OutputInvputaway.get("PartStatus").toString();
+    	rstArr= (ArrayList<HashMap<String, String>>) OutputInvputaway.get("RstArr");
     
     	if(outIsFound.equals("1")){
-    		CommUtil.logger.info(">ReceiveToPutaway.Success: " +inPartNum+" Partstatus: "+outPartStatus);
+    		CommUtil.logger.info(">PutawayToInv.Success: " +inPartNum+" Result Array size: "+rstArr.size());
+/*    		for (int i = 0; i < rstArr.size(); i++) {
+    			HashMap<String, String> retObj = rstArr.get(i);
+    			CommUtil.logger.info(">Result Obj : "+i);
+    			for (Entry<String, String> entry : retObj.entrySet()) {
+    				CommUtil.logger.info("> Key:" + entry.getKey()+" value: "+ entry.getValue());
+    			}
+    		}*/
+    		
+    		
     	}
     	else if (outIsFound.equals("0")) {
     		CommUtil.logger.info(">ReceiveToPutaway.Part not found. PartNum: " +inPartNum );
@@ -355,32 +388,32 @@ public class CommonAction {
     		CommUtil.logger.info(">Logging Out...");
 			cstMainaction.logout();
     	}
-    	return outPartStatus;
+    	return rstArr;
     }
     
-    public HashMap<String, String> PutawayToInv_CA(HashMap<String, ?> InputObj) throws NoSuchElementException
+    public HashMap<Object, Object> PutawayToInv_CA(HashMap<String, ?> InputObj) throws NoSuchElementException
     {
-       HashMap<String, String> OutPutObj = new HashMap<String, String>();
+       HashMap<Object, Object> OutPutObj = new HashMap<Object, Object>();
        OutPutObj.put("IsFound", "");
-       OutPutObj.put("PartStatus", "");
    
        String outIsFound = "-1";
        
        String inSN = InputObj.get("SN").toString();
-       CommUtil.logger.info(inSN);
+       //CommUtil.logger.info(inSN);
        String inProjCode = InputObj.get("ProjectCode").toString();
-       CommUtil.logger.info(inProjCode);
+       //CommUtil.logger.info(inProjCode);
        String inPalletID = InputObj.get("PalletID").toString();
-       CommUtil.logger.info(inPalletID);
+       //CommUtil.logger.info(inPalletID);
        String inBoxID = InputObj.get("BoxID").toString();
-       CommUtil.logger.info(inBoxID);
+       //CommUtil.logger.info(inBoxID);
        String inLocation = InputObj.get("Location").toString();
-       CommUtil.logger.info(inLocation);
+       //CommUtil.logger.info(inLocation);
        String inPartNum = InputObj.get("PartNum").toString();
-       CommUtil.logger.info(inPartNum);
+       //CommUtil.logger.info(inPartNum);
        String inPONum = InputObj.get("PONum").toString();
-       CommUtil.logger.info(inPONum);
-       
+       //CommUtil.logger.info(inPONum);
+       String inQty=InputObj.get("Qty").toString();
+      
        
        CST_MainAction cstMain= new CST_MainAction(webdriver);
        cstMain.MenuInventory();
@@ -395,9 +428,10 @@ public class CommonAction {
        ReceivingPutawayInPutObj.put("ProjectCode",inProjCode);
        ReceivingPutawayInPutObj.put("PalletID",inPalletID);
        ReceivingPutawayInPutObj.put("BoxID",inBoxID);
+       CommUtil.logger.info("SearchPutaway");
        outIsFound= ReceivingPutaway.SearchPutaway(ReceivingPutawayInPutObj);
        
-       CommUtil.logger.info("SearchPutaway : " + outIsFound);
+       //CommUtil.logger.info("SearchPutaway : " + outIsFound);
       // RunAction "SearchPutaway [ReceivingPutaway]", oneIteration, "PendPutaway",inSN,inProjCode,inPalletID,inBoxID,outIsFound
        if(outIsFound.equals("1"))
        {
@@ -421,7 +455,7 @@ public class CommonAction {
       CommUtil.logger.info("SaveToPutawayready");
        
       String OutRetVal= ReceivingPutaway.SaveToPutawayready(inLocation);
-      CommUtil.logger.info(" SaveToPutawayready : Return val"+OutRetVal);
+      //CommUtil.logger.info(" SaveToPutawayready : Return val"+OutRetVal);
       
       if(OutRetVal.equals("0")) {
    	   CommUtil.logger.info("SaveToPutawayready - Success");
@@ -444,7 +478,7 @@ public class CommonAction {
        CommUtil.logger.info("Calling SearchPutaway");
        outIsFound= ReceivingPutaway.SearchPutaway(ReceivingPutawayInPutObj);
 
-       CommUtil.logger.info("Calling SearchPutaway return val"+outIsFound);
+       //CommUtil.logger.info("Calling SearchPutaway return val"+outIsFound);
      
        if(outIsFound.equals("1")){
     	   CommUtil.logger.info(">SearchPutaway-PutawayReady Item found.");
@@ -462,8 +496,8 @@ public class CommonAction {
     	   cstMainaction.logout();
        }
        CommUtil.logger.info("Calling SaveToPutaway");
-       String outRetVal= ReceivingPutaway.SaveToPutaway();
-       CommUtil.logger.info("Calling SaveToPutaway : return val"+outRetVal);
+       String outRetVal= ReceivingPutaway.SaveToPutaway(inQty);
+       //CommUtil.logger.info("Calling SaveToPutaway : return val"+outRetVal);
       
        if(outRetVal.equals("0")) {
     	   CommUtil.logger.info("SaveToPutaway - Success");
@@ -487,12 +521,13 @@ public class CommonAction {
       InventoryLookupObj.put("SearchPONum",inPONum);
       InventoryLookupObj.put("ProjectCode",inProjCode);
       InventoryLookupObj.put("SearchStatus","");
+      InventoryLookupObj.put("PalletID",inPalletID);
       InventoryLookupObj.put("StockGroup",TestSetting.StockGroup);
-      
-      HashMap<String, String> OutPutInventoryObj=InvLookup.SearchInventory(InventoryLookupObj);
+      InventoryLookupObj.put("Qty", inQty);     
+      HashMap<Object, Object> OutPutInventoryObj=InvLookup.SearchInventory(InventoryLookupObj);
       // RunAction "SearchInventory [InventoryLookup]", oneIteration, inPartNum, inSN, inPONum, inProjCode,"","", outIsFound, outPartStatus, outBoxid, outLocation, outSN, outPONum
       OutPutObj.put("IsFound", OutPutInventoryObj.get("IsFound").toString());
-  	  OutPutObj.put("PartStatus", OutPutInventoryObj.get("PartStatus").toString());
+  	  OutPutObj.put("RstArr", OutPutInventoryObj.get("RstArr"));
       
       return OutPutObj;
     }

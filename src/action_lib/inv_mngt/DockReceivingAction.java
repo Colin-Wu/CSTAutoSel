@@ -24,7 +24,8 @@ public class DockReceivingAction {
 	}
 	
 	public HashMap<String, String> DetailReceiving(HashMap<String, ?> InputObj) throws NoSuchElementException {
-	
+		
+		int pagemaxrow = 25;
 		HashMap<String, String> RetObj = new HashMap<String, String>();
 		RetObj.put("RetVal","");
 		RetObj.put("PalletID", "");
@@ -41,18 +42,21 @@ public class DockReceivingAction {
 		WebElement TxtQty = Obj.getTxtQty();
 		TxtQty.sendKeys(inQty);
 		
-		WebElement WebEleCmbDisposition = Obj.getCmbDetailReceiveDisposition();
-		Select CmbDisposition=new Select(WebEleCmbDisposition);
-		boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbDisposition, inDisposition);
-		 
-		if (!isHasVal) {
-	      CommUtil.logger.info(" > Disposition option not found in UI.");
-	      RetObj.put("PalletID","");
-		  RetObj.put("RetVal", "-1");
-		  return RetObj;
-		}
+		if (!inDisposition.equals("")) {
+			WebElement WebEleCmbDisposition = Obj.getCmbDetailReceiveDisposition();
+			Select CmbDisposition=new Select(WebEleCmbDisposition);
+			boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbDisposition, inDisposition);
+			 
+			if (!isHasVal) {
+		      CommUtil.logger.info(" > Disposition option not found in UI.");
+		      RetObj.put("PalletID","");
+			  RetObj.put("RetVal", "-1");
+			  return RetObj;
+			}
+			
+			CmbDisposition.selectByVisibleText(inDisposition); 
 		
-		CmbDisposition.selectByVisibleText(inDisposition); 
+		}
 		WebElement BtnCreatePalletID = Obj.getBtnCreatePalletID();
 		BtnCreatePalletID.click();
 		
@@ -65,20 +69,34 @@ public class DockReceivingAction {
 		WebElement BtnGo = Obj.getBtnGo();
 		BtnGo.click();
 		SeleniumUtil.waitPageRefresh(BtnGo);
+
 		
-        WebElement tblResult = Obj.getTblDetailReceivingINVParts();
+		int totalPage = (int) Math.ceil(Double.valueOf(inQty)/pagemaxrow);
 		
-		int tblRow = SeleniumUtil.getTableRows(tblResult);
-		
-		CommUtil.logger.info("Number of Rows : " + tblRow);
-		// Iterate over the rows set the UniqueSerialNum 
-		
-		if(tblRow >= 2)
-		{
-			for(int index=0; index< tblRow-1; index++)
+		for (int pageno = 1; pageno <= totalPage; pageno++) {
+
+	        WebElement tblResult = Obj.getTblDetailReceivingINVParts();
+			
+			int tblRow = SeleniumUtil.getTableRows(tblResult);
+			
+			//CommUtil.logger.info("Number of Rows : " + tblRow);
+			// Iterate over the rows set the UniqueSerialNum 
+			int index0=pagemaxrow*(pageno-1);
+			if(tblRow >= 2)
 			{
-				 WebElement SlNumElement= Obj.getUniqueSerialNum(index);
-				 SlNumElement.sendKeys(inSN+index);	
+				for(int i=0; i< tblRow-1; i++)
+				{
+					 
+					 WebElement SlNumElement= Obj.getUniqueSerialNum(i);
+					 SlNumElement.sendKeys(inSN+index0++);	
+
+				}
+			}
+			
+			if (pageno != totalPage) {
+				WebElement BtnNext = Obj.getBtnNext();
+				BtnNext.click();
+				SeleniumUtil.waitPageRefresh(BtnNext);
 			}
 		}
         
@@ -92,13 +110,13 @@ public class DockReceivingAction {
 			WebElement lblSuccessMessage = Obj.getLblSuccessDetailReceivingMessage();	
 
 			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
-				CommUtil.logger.info(" > Dock Entry has been saved\\.");
+				CommUtil.logger.info(" > Dock Entry has been saved.");
 				 RetObj.put("PalletID",Obj.gettxtPalletId().getAttribute("value"));
-				 CommUtil.logger.info(" > Pallet ID"+ Obj.gettxtPalletId().getAttribute("value"));
+				 //CommUtil.logger.info(" > Pallet ID"+ Obj.gettxtPalletId().getAttribute("value"));
 				 RetObj.put("RetVal", "0");
 			}
 		}
-		 CommUtil.logger.info(" > RetVal "+  RetObj.get("RetVal").toString());
+		// CommUtil.logger.info(" > RetVal "+  RetObj.get("RetVal").toString());
 		 return RetObj;
 	}
 	
@@ -139,7 +157,7 @@ public class DockReceivingAction {
 			    }
 		   }
 		
-		CommUtil.logger.info("Return Vale : "+RetValue);
+		//CommUtil.logger.info("Return Vale : "+RetValue);
 		return  RetValue;
 	}
 	
@@ -158,7 +176,7 @@ public class DockReceivingAction {
 		WebElement BtnNewDockRcv = Obj.getBtnNewDockRcv();
 		BtnNewDockRcv.click();
 		
-		CommUtil.logger.info("clicked..");
+		//CommUtil.logger.info("clicked..");
 		SeleniumUtil.waitPageRefresh(BtnNewDockRcv);
 	
 		WebElement TxtTrackingNumber = Obj.getTxtTrackingNumber();
@@ -201,7 +219,7 @@ public class DockReceivingAction {
 			WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
 
 			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
-				CommUtil.logger.info(" > Dock Entry has been saved\\.");
+				CommUtil.logger.info(" > Dock Entry has been saved.");
 				ret = "0";
 			}
 		}
