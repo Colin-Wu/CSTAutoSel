@@ -140,7 +140,7 @@ public class SeleniumUtil {
 
 		            	result = true; 
 		            }
-		        	  	 
+		        	//System.out.println(result+":"+WebElmt.getAttribute(Prop)+" - "+Val);
 		        } catch(Exception e){  
 
 		        }  

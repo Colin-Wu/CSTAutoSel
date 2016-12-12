@@ -1,5 +1,6 @@
 package action_lib.odr_mngt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -24,17 +25,54 @@ public class OrderEntry2Action {
 		String ret = "-1";
 		
 		String Mode = InputObj.get("Mode").toString();
-		String SearchPartNum = InputObj.get("SearchPartNum").toString();
-		String SearchBOM = InputObj.get("SearchBOM").toString();
-		String SearchSN = InputObj.get("SearchSN").toString();
-		String ExpectedSN = InputObj.get("ExpectedSN").toString();
-		String IsConfig = InputObj.get("IsConfig").toString();		
+		ArrayList<?> InputArr = (ArrayList<?>) InputObj.get("PartArr");		
 		
 		OrderEntry2Obj Obj = new OrderEntry2Obj(webdriver);
 		
 		if (Mode.equals("0")) {
 			
 		} else if(Mode.equals("1")) {
+			
+			String retAddPart = AddParts(InputArr);
+			
+			if (!retAddPart.equals("0")) {
+				return retAddPart;
+			}
+		
+		} else if(Mode.equals("2")) {
+			WebElement  LinkAdd = Obj.getLinkAdd();
+			LinkAdd.click();
+
+			SeleniumUtil.waitPageRefresh(LinkAdd);
+		}
+
+		boolean isTblAddListExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getTblAddListLocator(), 0);
+		if (isTblAddListExist) {
+			WebElement  BtnNext = Obj.getBtnNext();
+			BtnNext.click();
+		}		
+		
+		ret = "0";
+		return ret;
+	}
+
+	public String AddParts (ArrayList<?> InputArr) throws NoSuchElementException  {
+		//RetVal:-1:error;0: success;1:Expected SN is invalid;
+		String ret = "-1";
+		
+		int PartCnt = InputArr.size();
+			
+		for (int i = 0; i < PartCnt; i++) {
+			OrderEntry2Obj Obj = new OrderEntry2Obj(webdriver);
+			
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> PartPara = (HashMap<String, String>) InputArr.get(i);
+			
+			String SearchPartNum = PartPara.get("SearchPartNum").toString();
+			String SearchBOM = PartPara.get("SearchBOM").toString();
+			String SearchSN = PartPara.get("SearchSN").toString();
+			String ExpectedSN = PartPara.get("ExpectedSN").toString();
+			String IsConfig = PartPara.get("IsConfig").toString();	
 			
 			WebElement TxtSearchPartNum = Obj.getTxtSearchPartNum();
 			TxtSearchPartNum.sendKeys(SearchPartNum);	
@@ -62,21 +100,9 @@ public class OrderEntry2Action {
 				}
 			}
 		
-		} else if(Mode.equals("2")) {
-			WebElement  LinkAdd = Obj.getLinkAdd();
-			LinkAdd.click();
-
-			SeleniumUtil.waitPageRefresh(LinkAdd);
-		}
-
-		boolean isTblAddListExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getTblAddListLocator(), 0);
-		if (isTblAddListExist) {
-			WebElement  BtnNext = Obj.getBtnNext();
-			BtnNext.click();
-		}		
+		}	
 		
 		ret = "0";
 		return ret;
 	}
-
 }

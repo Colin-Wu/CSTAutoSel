@@ -28,13 +28,21 @@ public class ReceivingPutawayObj {
 	By TxtWareHouseLocationLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_grvRecPutaways_txtLocNumber_0']");
 	
 	By LblErrorMessageLocator =  By.xpath(".//span[@id='ContentPlaceHolder1_lblError']");
-	
+
+	By ImgLoadingLocator =  By.xpath(".//img[@src='/Images/loading.gif']");
+
 	
 	public ReceivingPutawayObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
 	}
-	
+	public WebElement getImgLoading() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(ImgLoadingLocator);
+
+		return retEle;
+	}	
 	public WebElement getLblErrorMessageLocation() throws NoSuchElementException  {
 		WebElement retEle = null;
 
@@ -174,4 +182,11 @@ public class ReceivingPutawayObj {
 	{
 		return "ContentPlaceHolder1_lblError";
 	}
+	
+	public By getTblSearchResultLocator() {
+		return TblSearchResultLocator;
+	}
+	public By getImgLoadingLocator() {
+		return ImgLoadingLocator;
+	}	
 }

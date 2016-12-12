@@ -12,6 +12,7 @@ public class CST_MainObj {
 	By CmdsignOutLocator = By.xpath(".//input[@id='cmdsignOut']");
 	By CmdOrderAdminLocator = By.xpath(".//input[@id='cmdOrderAdmin']");
 	By CmdInvManagementLocator = By.xpath(".//input[@id='cmdInvManagement']");	
+	By CmdShippingLocator = By.xpath(".//input[@id='cmdShipping']");	
 	
 	public CST_MainObj(WebDriver driver) {
 		super();
@@ -26,7 +27,15 @@ public class CST_MainObj {
 
 		return retEle;
 	}
+	public WebElement getCmdShipping() throws NoSuchElementException {
 
+		WebElement retEle = null;
+		
+       	retEle = webdriver.findElement(CmdShippingLocator);
+
+		return retEle;
+	}
+	
 	public WebElement getCmdOrderAdmin() throws NoSuchElementException {
 
 		WebElement retEle = null;
