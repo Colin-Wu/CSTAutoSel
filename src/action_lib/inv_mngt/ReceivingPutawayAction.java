@@ -2,7 +2,6 @@ package action_lib.inv_mngt;
 
 import java.util.HashMap;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -83,7 +82,7 @@ public class ReceivingPutawayAction {
 		
 		//SeleniumUtil.waitWebElementProperty(webdriver, By.xpath(".//table[@id='ContentPlaceHolder1_grvRecPutaways']"), "visible", "true");
 		//System.out.println("waitWebElementProperty start");
-		SeleniumUtil.waitWebElementProperty(webdriver, By.xpath(".//div[@id='UpdateProgress1']"), "style", "display: block;");
+		SeleniumUtil.waitPageRefreshByLoadingIcon(webdriver);
 		//System.out.println("waitWebElementProperty end");
 	
 		WebElement tblResult = Obj.getTblSearchResult();
@@ -161,6 +160,7 @@ public class ReceivingPutawayAction {
         if(tblRow == 2)
         {
         	WebElement TxtWarehouseLocation = Obj.getTxtWareHouseLocation();
+        	TxtWarehouseLocation.clear();
         	TxtWarehouseLocation.sendKeys(Location);	
     		
         	WebElement BtnSave = Obj.getBtnSave();
@@ -171,6 +171,7 @@ public class ReceivingPutawayAction {
         else if (tblRow > 2)
         {
         	WebElement TxtWarehouseLocation = Obj.getTxtWareHouseLocation();
+        	TxtWarehouseLocation.clear();
         	TxtWarehouseLocation.sendKeys(Location);
         	
         	WebElement ChkDefaultBtnLocation = Obj.getChkDefaultLocation();
@@ -213,15 +214,15 @@ public class ReceivingPutawayAction {
 				
 				WebElement lblErrorMessage = Obj.getLblErrorMessageLocation();	
 
-				CommUtil.logger.info(" >"+lblErrorMessage.getText());
+				//CommUtil.logger.info(" >"+lblErrorMessage.getText());
 				
 				if (CommUtil.isMatchByReg(lblErrorMessage.getText(), "The Warehouse Location entered is a repair location or not available, please update\\.")) {
-					CommUtil.logger.info(" > The Warehouse Location entered is a repair location or not available, please update\\.");
+					CommUtil.logger.info(" > The Warehouse Location entered is a repair location or not available, please update.");
 					retVal = "1";
 				}
 				
 				if (CommUtil.isMatchByReg(lblErrorMessage.getText(), "The Warehouse Location entered is not a repair location or not available, please update\\.")) {
-					CommUtil.logger.info(" > The Warehouse Location entered is not a repair location or not available, please update\\.");
+					CommUtil.logger.info(" > The Warehouse Location entered is not a repair location or not available, please update.");
 					retVal = "2";
 				}
 			}

@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import obj_repository.odr_mngt.OrderAdminObj;
 import obj_repository.odr_mngt.OrderEntry1Obj;
+import script_lib.CommUtil;
 import script_lib.SeleniumUtil;
 
 public class OrderEntry1Action {
@@ -17,6 +19,66 @@ public class OrderEntry1Action {
 		super();
 		this.webdriver = webdriver;
 	}
+	
+	public String CancelOrderEntry1 (HashMap<String, ?> InputObj) throws NoSuchElementException  {
+		//Mode:0,Cancel button visible;1,click cancel button;
+		//RetVal:-1:error;0: success;
+		String ret = "-1";
+		String Mode = InputObj.get("Mode").toString();
+		//String HasCommitedPart = InputObj.get("HasCommitedPart").toString();
+		boolean isCancelVisible = false;
+		
+		OrderEntry1Obj Obj = new OrderEntry1Obj(webdriver);
+		
+		//SeleniumUtil.waitWebElementProperty(webdriver, Obj.getBtnNextLocator(), "visible", "true");
+		SeleniumUtil.waitWebElementVisible(webdriver, Obj.getBtnNextLocator());
+		if (SeleniumUtil.isWebElementExist(webdriver, Obj.getBtnCancelLocator(), 0)) {
+			isCancelVisible = true;
+		}
+		
+		if (Mode.equals("0")) {
+			if (isCancelVisible) {
+				ret = "0";
+			} else {
+				ret = "1";
+			}
+			
+		} else if (Mode.equals("1")) {
+			if (isCancelVisible) {
+				WebElement BtnCancel = Obj.getBtnCancel();
+				BtnCancel.click();
+				SeleniumUtil.waitPageRefresh(BtnCancel);
+				
+				WebElement BtnConfirmCancelYes = Obj.getBtnConfirmCancelYes();
+				BtnConfirmCancelYes.click();
+				SeleniumUtil.waitPageRefresh(BtnConfirmCancelYes);
+				
+				boolean isBoxRlsFrameExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getFrameBoxRlsLocator(), 0);
+				if (isBoxRlsFrameExist) {
+					webdriver.switchTo().frame(Obj.getFrameBoxRls());
+					
+					WebElement  BtnOK = Obj.getBtnOKBoxRls();
+					BtnOK.click();
+					webdriver.switchTo().defaultContent();
+					
+
+				}
+				
+				OrderAdminObj ordAdminObj = new OrderAdminObj(webdriver);					
+				ordAdminObj.getBtnNewOrder();
+			
+				ret = "0";
+			} else {
+				ret = "1";
+			}
+			
+		} else {
+			CommUtil.logger.info(" > Invalid mode. inMode:" + Mode);	
+		}
+	
+		return ret;
+	}
+	
 	public String CreateOrderEntry1 (HashMap<String, ?> InputObj) throws NoSuchElementException  {
 		//Mode:0:Normal;1:Only click next
 		//POLink:0:Do not click fill with order number link;1:click the link
@@ -130,13 +192,21 @@ public class OrderEntry1Action {
 			
 		}
 		WebElement  BtnNext = Obj.getBtnNext();
+		boolean isConfirm = false;
+		WebElement  TxtPO = Obj.getTxtPO();
+		if (TxtPO.isEnabled() && TxtPO.getAttribute("value").equals("")) {
+			isConfirm = true;
+		}
 		BtnNext.click();
 		
-		if (POLink.equals("0")) {
-			WebElement  BtnConfirmPOOK = Obj.getBtnConfirmPOOK();
-			BtnConfirmPOOK.click();
+		if (isConfirm) {
+			TxtPO = Obj.getTxtPO();
+			if (TxtPO.isEnabled() && TxtPO.getAttribute("value").equals("")) {
+				WebElement  BtnConfirmPOOK = Obj.getBtnConfirmPOOK();
+				BtnConfirmPOOK.click();
+			}
+			SeleniumUtil.waitPageRefresh(TxtPO);
 		}
-		
 		ret = "0";
 		
 		return ret;

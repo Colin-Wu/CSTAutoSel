@@ -6,7 +6,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+
 import obj_repository.odr_mngt.CreatePOObj;
+import script_lib.CommUtil;
 import script_lib.SeleniumUtil;
 
 public class CreatePOAction {
@@ -31,6 +34,7 @@ public class CreatePOAction {
 		String PartNum = InputObj.get("PartNum").toString();
 		String Qty = InputObj.get("Qty").toString();
 		String OrdNum = InputObj.get("OrdNum").toString();
+		String StockGroup = InputObj.get("StockGroup").toString();
 	
 		CreatePOObj Obj = new CreatePOObj(webdriver);
 		
@@ -75,6 +79,17 @@ public class CreatePOAction {
 		}
 		
 		SeleniumUtil.waitPageRefresh(TxtVendor);
+		
+		WebElement WebEleSelStockGroup = Obj.getSelStockGroup(0);
+		Select SelStockGroup = new Select(WebEleSelStockGroup);
+		
+		boolean isHasVal = SeleniumUtil.isSelectHasOption(SelStockGroup, StockGroup);
+		if (!isHasVal) {
+			CommUtil.logger.info(" > StockGroup option not found in UI. StockGroup:"+StockGroup);
+			return RetObj;
+		}
+		
+		SelStockGroup.selectByVisibleText(StockGroup);
 		
 		tblPartlist = Obj.getTblPartList();
 		colidx = SeleniumUtil.getTableColIdxByName(tblPartlist, "QTY");

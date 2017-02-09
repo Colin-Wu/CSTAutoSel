@@ -1,5 +1,7 @@
 package obj_repository.inv_mngt;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +17,7 @@ public class PickEditObj {
 	By TblPickingAreaSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_gv_EntitiesConfirm']/tbody");
 	By BtnSaveLocator = By.xpath(".//input[@id='ContentPlaceHolder1_btnSave']");
 	By BtnYesLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogForPrintBox_cmdYes']");
+	By BtnNoLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogForPrintBox_cmdNo']");
 	By LblSuccessLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccess']");
 	By ImageShowhideLocator = By.xpath(".//img[starts-with(@id, 'imgdiv')]");
 	
@@ -22,7 +25,13 @@ public class PickEditObj {
 		super();
 		this.webdriver = driver;		
 	}
-	
+	public WebElement getBtnNo() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnNoLocator);
+
+		return retEle;
+	}	
 	public WebElement getImageShowhideLocation() throws NoSuchElementException  {
 		WebElement retEle = null;
 
@@ -55,18 +64,18 @@ public class PickEditObj {
 		return retEle;
 	}
 	
-	public WebElement getTxtBoxIDLocation() throws NoSuchElementException  {
-		WebElement retEle = null;
+	public List<WebElement> getTxtBoxIDs() throws NoSuchElementException  {
+		List<WebElement> retEle = null;
 
-		retEle = webdriver.findElement(TxtBoxIDLocator);
+		retEle = webdriver.findElements(TxtBoxIDLocator);
 
 		return retEle;
 	}
 	
-	public WebElement getTxtQtyLocation() throws NoSuchElementException  {
-		WebElement retEle = null;
+	public List<WebElement> getTxtQtys() throws NoSuchElementException  {
+		List<WebElement> retEle = null;
 
-		retEle = webdriver.findElement(TxtQtyLocator);
+		retEle = webdriver.findElements(TxtQtyLocator);
 
 		return retEle;
 	}

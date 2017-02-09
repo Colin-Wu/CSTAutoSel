@@ -30,8 +30,10 @@ public class DockReceivingObj {
 	
 	By SelProjectCodeLocator = By.xpath(".//select[@id='ContentPlaceHolder1_rptNew_ddlCustomerProject_0']");
 
-	By LblSuccessMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccessNew']");	
+	//By LblSuccessMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccessNew']");	
+	By LblSuccessMessageLocator = By.xpath(".//span[starts-with(@id, 'ContentPlaceHolder1_lblSuccess')]");	
 	By LblErrMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblError']");	
+	//By LblSuccessMessageSaveLineLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccess']");	
 
 	By TxtTranckNumLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_txtTrackingNumber']");
 	
@@ -51,10 +53,77 @@ public class DockReceivingObj {
 
 	 By BtnNextLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_ucDetailReceiving_btnNext']");
 
+	 By BtnYesDialogBoxConfirmPOLocator =  By.xpath(".//input[@id='ContentPlaceHolder1_ccConfirmDialogPO_cmdYes']");
 	 
 	public DockReceivingObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
+	}
+/*	public WebElement getLblSuccessMessageSaveLine() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(LblSuccessMessageSaveLineLocator);
+		return retEle;
+	}*/
+	public WebElement getBtnYesDialogBoxConfirmPO() throws NoSuchElementException  {
+		WebElement retEle = null;
+		retEle = webdriver.findElement(BtnYesDialogBoxConfirmPOLocator);
+		return retEle;
+	}
+	public WebElement getSelProjectCode(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//select[@id='ContentPlaceHolder1_gv_Entities_ddlCustomerProject_" + idx + "']"));
+
+		return retEle;
+	}	
+	public WebElement getTxtPalletCount(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//input[@id='ContentPlaceHolder1_gv_Entities_txtPalletCount_" + idx + "']"));
+
+		return retEle;
+	}	
+	public WebElement getTxtBoxCount(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//input[@id='ContentPlaceHolder1_gv_Entities_txtBoxCount_" + idx + "']"));
+
+		return retEle;
+	}	
+	public WebElement getTxtCarrier(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//input[@id='ContentPlaceHolder1_gv_Entities_txtCarrier_" + idx + "']"));
+
+		return retEle;
+	}	
+	public WebElement getTxtPONumber(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//input[@id='ContentPlaceHolder1_gv_Entities_txtPONumber_" + idx + "']"));
+
+		return retEle;
+	}	
+	public WebElement getTxtTrackingNumber(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//input[@id='ContentPlaceHolder1_gv_Entities_txtTrackingNumber_" + idx + "']"));
+
+		return retEle;
+	}	
+	public WebElement getLinkSaveLine(String idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//a[@id='ContentPlaceHolder1_gv_Entities_lbtnSaveLine_" + idx + "']"));
+
+		return retEle;
+	}
+	public WebElement getLinkEditLine(int idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//a[@id='ContentPlaceHolder1_gv_Entities_lbtnEditLine_" + Integer.toString(idx) + "']"));
+
+		return retEle;
 	}
 	public WebElement getBtnNext() throws NoSuchElementException  {
 		WebElement retEle = null;
@@ -309,5 +378,11 @@ public class DockReceivingObj {
 	}
 	public By getBtnNextLocator() {
 		return BtnNextLocator;
-	}	
+	}
+	public By getBtnYesDialogBoxConfirmPOLocator() {
+		return BtnYesDialogBoxConfirmPOLocator;
+	}
+/*	public By getLblSuccessMessageSaveLineLocator() {
+		return LblSuccessMessageSaveLineLocator;
+	}	*/
 }

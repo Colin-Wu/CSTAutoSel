@@ -13,12 +13,20 @@ public class OrderEntry4Obj {
 
 	By BtnActivateLocator = By.xpath(".//input[@id='ContentPlaceHolder1_cmdActivate']");	
 	By BtnConfirmActYesLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogOrder_cmdYes']");	
+	By BtnSaveLocator = By.xpath(".//input[@id='ContentPlaceHolder1_cmdSave']");	
 
 	
 	public OrderEntry4Obj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
 	}
+	public WebElement getBtnSave() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnSaveLocator);
+
+		return retEle;
+	}	
 	public WebElement getBtnConfirmActYes() throws NoSuchElementException  {
 		WebElement retEle = null;
 

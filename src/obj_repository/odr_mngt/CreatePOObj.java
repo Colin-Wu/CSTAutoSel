@@ -26,6 +26,13 @@ public class CreatePOObj {
 		super();
 		this.webdriver = driver;		
 	}
+	public WebElement getSelStockGroup(int idx) throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(By.xpath(".//select[@id='ContentPlaceHolder1_rptPart_ddlStockGroup_" + Integer.toString(idx) + "']"));
+
+		return retEle;
+	}
 	public WebElement getBtnConfirmYes() throws NoSuchElementException  {
 		WebElement retEle = null;
 

@@ -89,7 +89,7 @@ public class InvIndexAction {
     	
     	InvIndexObj invIdxObj = new InvIndexObj(webdriver);
     	
-		WebElement CmdTransferAction = invIdxObj.getCmdDocReceivingLocator();
+		WebElement CmdTransferAction = invIdxObj.getCmdTransferActionLocator();
 
 		CmdTransferAction.click();
     }

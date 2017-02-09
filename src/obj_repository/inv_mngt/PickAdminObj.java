@@ -75,7 +75,7 @@ public class PickAdminObj {
 		return retEle;
 	}
 	
-	public WebElement getTblSearchResultLocation() throws NoSuchElementException  {
+	public WebElement getTblSearchResult() throws NoSuchElementException  {
 		WebElement retEle = null;
 
 		retEle = webdriver.findElement(TblSearchResultLocator);
@@ -103,6 +103,10 @@ public class PickAdminObj {
 	}
 	public By getCmbUserNameLocator() {
 		return CmbUserNameLocator;
+	}
+
+	public By getTblSearchResultLocator() {
+		return TblSearchResultLocator;
 	}
 	
 }
