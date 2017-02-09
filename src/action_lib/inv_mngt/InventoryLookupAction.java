@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import config.TestSetting;
 import obj_repository.inv_mngt.InventoryLookupObj;
 
 import script_lib.CommUtil;
@@ -43,6 +44,7 @@ public class InventoryLookupAction {
 		String SN="";
 		String PONum="";
 		String IsFound="";
+		String caseid = "";
 
 		HashMap<String, String> RstObj = new HashMap<String, String>();
 		RstObj.put("BoxID", BoxID);
@@ -79,14 +81,28 @@ public class InventoryLookupAction {
 		String StockGroup = InputObj.get("StockGroup").toString();
 		//CommUtil.logger.info(StockGroup);
 		String PalletID = InputObj.get("PalletID").toString();
+
+		String SearchBoxid = InputObj.get("SearchBoxid").toString();
+
+		
 		//CommUtil.logger.info(PalletID);
-		//String inQty = InputObj.get("Qty").toString();
+		int inQty = Integer.parseInt(InputObj.get("Qty").toString());
 		//CommUtil.logger.info(inQty);
+		Object caseidobj = InputObj.get("caseid");
+		
+		if (caseidobj != null) {
+			caseid = caseidobj.toString();
+		}
 		
 		//int totalPage = (int) Math.ceil(Double.valueOf(inQty)/pagemaxrow);		
 		
 	    InventoryLookupObj Obj = new InventoryLookupObj(webdriver);
-	   
+
+		WebElement TxtBoxID = Obj.getTxtBoxID();
+		if (!TxtBoxID.getAttribute("value").equals(SearchBoxid)) {
+			TxtBoxID.sendKeys(SearchBoxid);
+		}
+		
 		WebElement TxtProjectCode = Obj.getTxtProjectCode();
 		if (!TxtProjectCode.getAttribute("value").equals(ProjectCode)) {
 			TxtProjectCode.sendKeys(ProjectCode);
@@ -128,7 +144,7 @@ public class InventoryLookupAction {
 	    	}*/
 	    		
 			if (!isHasVal) {
-				CommUtil.logger.info(" > Status option not found in UI");
+				CommUtil.logger.info(" > Status option not found in UI"+SearchStatus);
 				IsFound = "-1";
 				RetObj.put("IsFound", IsFound);
 				return RetObj;
@@ -140,29 +156,31 @@ public class InventoryLookupAction {
        Select CmbStock = Obj.getStockGroup();
        isHasVal=false;
        
-       String selStockgroup = ProjectCode + " - " + StockGroup;
-       if (!CmbStock.getFirstSelectedOption().getAttribute("value").equals(selStockgroup)) {
-       
-		   isHasVal = SeleniumUtil.isSelectHasOption(CmbStock, selStockgroup);
-	      
-	/*	     options = CmbStock.getOptions();
-		     
-		   	 for (WebElement option : options) {
-		   		if(option.getText().equals(StockGroup)){
-		   			isHasVal=true;
-		   			CommUtil.logger.info(" > Stock group option found in UI");
-		   			break;
-		   		}
-		   	}*/
+       if (!StockGroup.equals("")) {
+	       String selStockgroup = ProjectCode + " - " + StockGroup;
+	       if (!CmbStock.getFirstSelectedOption().getAttribute("value").equals(selStockgroup)) {
 	       
-		  if (!isHasVal) {
-				CommUtil.logger.info(" > Stock group option not found in UI");
-				IsFound = "-1";
-				RetObj.put("IsFound", IsFound);
-				return RetObj;
-			}
-			
-			CmbStock.selectByVisibleText(selStockgroup);
+			   isHasVal = SeleniumUtil.isSelectHasOption(CmbStock, selStockgroup);
+		      
+		/*	     options = CmbStock.getOptions();
+			     
+			   	 for (WebElement option : options) {
+			   		if(option.getText().equals(StockGroup)){
+			   			isHasVal=true;
+			   			CommUtil.logger.info(" > Stock group option found in UI");
+			   			break;
+			   		}
+			   	}*/
+		       
+			  if (!isHasVal) {
+					CommUtil.logger.info(" > Stock group option not found in UI:"+selStockgroup);
+					IsFound = "-1";
+					RetObj.put("IsFound", IsFound);
+					return RetObj;
+				}
+				
+				CmbStock.selectByVisibleText(selStockgroup);
+	       }
        }
 		
 		WebElement BtnSearch= Obj.getBtnSearch();
@@ -178,46 +196,141 @@ public class InventoryLookupAction {
         	CommUtil.logger.info(" > Search result is Found.");
         	List<WebElement> tableRows = tblResult.findElements(By.xpath("./tr"));
         	
+        	int availQty = 0;
+        	int pagesum = 1;
+        	List<WebElement> pagelinks = null;
+        	
         	int rstMaxRow = 0;
         	if (tableRows.size() == pagemaxrow+2) {
         		rstMaxRow = tableRows.size()-2;
+        		
+        		pagelinks = tableRows.get(pagemaxrow+1).findElements(By.xpath("./td/table/tbody/tr/td"));
+        		pagesum = pagelinks.size();
+        		
         	} else {
         		rstMaxRow = tableRows.size()-1;
         	}      	
         	
-        	for (int index = 1; index <=rstMaxRow; index++){
-        		
-        	   List<WebElement> Columns = tableRows.get(index).findElements(By.xpath("./td"));
-        	  
-        	   if(Columns.size() > 0) {
-        		   RstObj = new HashMap<String, String>();
-	        	   //CommUtil.logger.info("> BoxID : " + Columns.get(boxidColSeq).getText());
-	        	   BoxID = Columns.get(boxidColSeq).getText();
-	        	   //CommUtil.logger.info("> PartStatus : " + Columns.get(partStatusColSeq).getText());
-	        	   PartStatus = Columns.get(partStatusColSeq).getText();
-	        	   //CommUtil.logger.info("> Location : " + Columns.get(LocationColSeq).getText());
-	        	   Location = Columns.get(LocationColSeq).getText();
-	        	   //CommUtil.logger.info("> SN : " + Columns.get(SNColSeq).getText());
-	        	   SN = Columns.get(SNColSeq).getText();
-	        	   //CommUtil.logger.info("> PONum : " + Columns.get(PONumColSeq).getText());
-	        	   PONum = Columns.get(PONumColSeq).getText();
-	        	   
-		       	   RstObj.put("BoxID", BoxID);
-		    	   RstObj.put("PartStatus",PartStatus);
-		    	   RstObj.put("PONum", PONum);	
-		    	   RstObj.put("Location", Location);	
-		    	   RstObj.put("SN", SN);
-		    	   
-		    	   rstArr.add(RstObj);
+/*        	if (rstMaxRow < inQty) {
+				CommUtil.logger.info(" > Insufficient inventory for required qty. available:"+rstMaxRow + ", required:"+inQty);
+				IsFound = "-2";
+       			RetObj.put("IsFound", IsFound);
+       			return RetObj;        		
+        	} else {*/
+        	
+	        	//for (int index = 1; index <=inQty; index++){
+	        		
+	        		
+outterloop:	    for (int pageidx = 1; pageidx <= pagesum; pageidx++) {
+	        			
+	        			if (pageidx != 1) {
+	        				tblResult = Obj.getTblSearchResult();
+	        				tableRows = tblResult.findElements(By.xpath("./tr"));
+	        				rstMaxRow = tableRows.size()-2;
+	        				pagelinks = tableRows.get(rstMaxRow+1).findElements(By.xpath("./td/table/tbody/tr/td"));
+	        			}
+	        			
 
-        	   } else {
-					CommUtil.logger.info(" > Error while retrieving the Putaway Columns..");
-					IsFound = "-1";
-	       			RetObj.put("IsFound", IsFound);
-	       			return RetObj;
-        	   }
-        	   
-        	}
+	        			for (int rowid = 1; rowid <= rstMaxRow; rowid++) {
+
+	        				List<WebElement> Columns = tableRows.get(rowid).findElements(By.xpath("./td"));
+	     	        	    if(Columns.size() > 0) {
+	    	        		   RstObj = new HashMap<String, String>();
+	    		        	   //CommUtil.logger.info("> BoxID : " + Columns.get(boxidColSeq).getText());
+	    		        	   BoxID = Columns.get(boxidColSeq).getText();
+	    		        	   
+	    		        	   // sync resource when multi thread running
+	    		        	   if (!caseid.equals("")) {
+	    		        		   boolean retb = TestSetting.reslist.addBoxid(caseid, BoxID);
+	    		        		   if (!retb) {
+	    		        			   continue;
+	    		        		   }
+	    		        	   }
+	    		        	   
+	    		        	   //CommUtil.logger.info("> PartStatus : " + Columns.get(partStatusColSeq).getText());
+	    		        	   PartStatus = Columns.get(partStatusColSeq).getText();
+	    		        	   //CommUtil.logger.info("> Location : " + Columns.get(LocationColSeq).getText());
+	    		        	   Location = Columns.get(LocationColSeq).getText();
+	    		        	   //CommUtil.logger.info("> SN : " + Columns.get(SNColSeq).getText());
+	    		        	   SN = Columns.get(SNColSeq).getText();
+	    		        	   //CommUtil.logger.info("> PONum : " + Columns.get(PONumColSeq).getText());
+	    		        	   PONum = Columns.get(PONumColSeq).getText();
+	    		        	  
+	    		        	   
+	    			       	   RstObj.put("BoxID", BoxID);
+	    			    	   RstObj.put("PartStatus",PartStatus);
+	    			    	   RstObj.put("PONum", PONum);	
+	    			    	   RstObj.put("Location", Location);	
+	    			    	   RstObj.put("SN", SN);
+	    			    	   
+	    			    	   rstArr.add(RstObj);
+	    			    	   availQty++;
+	    			    	   if (availQty >= inQty) {
+	    			    		   break outterloop;   
+	    			    	   } else {
+	    			    		   if (rowid==rstMaxRow && pageidx != pagesum) {
+	    			    			   WebElement pagelink = pagelinks.get(pageidx).findElement(By.xpath("./a"));
+	    			    			   pagelink.click();
+	    			    			   SeleniumUtil.waitPageRefresh(pagelink);
+	    			    		   }
+	    			    	   }
+	    			    	   
+	    	
+	    	        	    } else {
+	    						CommUtil.logger.info(" > Error while retrieving the Putaway Columns..");
+	    						IsFound = "-1";
+	    		       			RetObj.put("IsFound", IsFound);
+	    		       			return RetObj;
+	    	        	    }	        				
+	        				
+	        			}
+	        			
+	        			
+	        		}
+	        		
+	        	   if (availQty < inQty) {
+	        		    if (!caseid.equals("")) {
+	        			   TestSetting.reslist.releaseBoxid(caseid);
+	        		    }
+		   				CommUtil.logger.info(" > Insufficient inventory for required qty. available:"+availQty + ", required:"+inQty);
+						IsFound = "-2";
+		       			RetObj.put("IsFound", IsFound);
+		       			return RetObj;   	        		   
+	        	   }
+	        		
+	        		
+/*	        	   List<WebElement> Columns = tableRows.get(index).findElements(By.xpath("./td"));
+	        	  
+	        	   if(Columns.size() > 0) {
+	        		   RstObj = new HashMap<String, String>();
+		        	   //CommUtil.logger.info("> BoxID : " + Columns.get(boxidColSeq).getText());
+		        	   BoxID = Columns.get(boxidColSeq).getText();
+		        	   //CommUtil.logger.info("> PartStatus : " + Columns.get(partStatusColSeq).getText());
+		        	   PartStatus = Columns.get(partStatusColSeq).getText();
+		        	   //CommUtil.logger.info("> Location : " + Columns.get(LocationColSeq).getText());
+		        	   Location = Columns.get(LocationColSeq).getText();
+		        	   //CommUtil.logger.info("> SN : " + Columns.get(SNColSeq).getText());
+		        	   SN = Columns.get(SNColSeq).getText();
+		        	   //CommUtil.logger.info("> PONum : " + Columns.get(PONumColSeq).getText());
+		        	   PONum = Columns.get(PONumColSeq).getText();
+		        	   
+			       	   RstObj.put("BoxID", BoxID);
+			    	   RstObj.put("PartStatus",PartStatus);
+			    	   RstObj.put("PONum", PONum);	
+			    	   RstObj.put("Location", Location);	
+			    	   RstObj.put("SN", SN);
+			    	   
+			    	   rstArr.add(RstObj);
+	
+	        	   } else {
+						CommUtil.logger.info(" > Error while retrieving the Putaway Columns..");
+						IsFound = "-1";
+		       			RetObj.put("IsFound", IsFound);
+		       			return RetObj;
+	        	   }*/
+	        	   
+	        	//}
+        	//}
         	
      	   IsFound="1";
 

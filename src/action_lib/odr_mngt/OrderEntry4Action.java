@@ -29,8 +29,11 @@ public class OrderEntry4Action {
 		
 		OrderEntry4Obj Obj = new OrderEntry4Obj(webdriver);
 		
-		if (Mode.equals("0")) {
-			
+		if (Mode.equals("0")||Mode.equals("5")) {
+			WebElement TxtAreaCmt = Obj.getTxtAreaCmt();
+			if (TxtAreaCmt.getAttribute("value").equals("")) {
+				TxtAreaCmt.sendKeys(vComments);	
+			}			
 		} else if (Mode.equals("1")) {
 			WebElement TxtAreaCmt = Obj.getTxtAreaCmt();
 			if (TxtAreaCmt.getAttribute("value").equals("")) {
@@ -41,17 +44,42 @@ public class OrderEntry4Action {
 			if (TxtAreaReportFailure.getAttribute("value").equals("")) {
 				TxtAreaReportFailure.sendKeys(vReportFailure);	
 			}
+		} else if (Mode.equals("2")) {
+			WebElement TxtAreaReportFailure = Obj.getTxtAreaReportFailure();
+			if (TxtAreaReportFailure.getAttribute("value").equals("")) {
+				TxtAreaReportFailure.sendKeys(vReportFailure);	
+			}			
+		} else if (Mode.equals("3")) {
+			
 		}
 		
-		WebElement  BtnActivate = Obj.getBtnActivate();
-		BtnActivate.click();	
+		if (!Mode.equals("5")) {
+			WebElement  BtnActivate = Obj.getBtnActivate();
+			BtnActivate.click();	
+			SeleniumUtil.waitPageRefresh(BtnActivate);
+		} else  {
+			WebElement  BtnSave = Obj.getBtnSave();
+			BtnSave.click();	
+			SeleniumUtil.waitPageRefresh(BtnSave);
+		}
 		
-		SeleniumUtil.waitPageRefresh(BtnActivate);
-		
-		if (Mode.equals("1")) {
+
+/*		
+		if (Mode.equals("0") || Mode.equals("1")) {
 			WebElement  BtnConfirmActYes = Obj.getBtnConfirmActYes();
 			BtnConfirmActYes.click();	
-		}
+		}*/
+		
+		boolean isBtnConfirmActYesExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getBtnConfirmActYesLocator(), 0);
+		if (isBtnConfirmActYesExist) {
+		
+			WebElement  BtnConfirmActYes = Obj.getBtnConfirmActYes();
+			//String visibleStat = BtnConfirmActYes.getAttribute("visible");
+			if (BtnConfirmActYes.isDisplayed()) {
+				BtnConfirmActYes.click();					
+			}
+
+		}		
 		
 		ret = "0";		
 		return ret;

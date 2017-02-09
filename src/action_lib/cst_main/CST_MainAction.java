@@ -24,6 +24,24 @@ public class CST_MainAction {
 		CmdsignOut.click();
 		
 	}
+	public void MenuSetting () throws NoSuchElementException {
+		
+		CST_MainObj mainObj = new CST_MainObj(webdriver);
+	
+		WebElement CmdSetting = mainObj.getCmdSetting();
+
+		CmdSetting.click();
+		
+	}	
+	public void MenuQA () throws NoSuchElementException {
+		
+		CST_MainObj mainObj = new CST_MainObj(webdriver);
+	
+		WebElement CmdQA = mainObj.getCmdQA();
+
+		CmdQA.click();
+		
+	}	
 	public void MenuShipping () throws NoSuchElementException {
 		
 		CST_MainObj mainObj = new CST_MainObj(webdriver);
@@ -49,6 +67,15 @@ public class CST_MainAction {
 		WebElement cmdOrderAdmin = mainObj.getCmdOrderAdmin();
 
 		cmdOrderAdmin.click();
+		
+	}
+	public void MenuProduction () throws NoSuchElementException {
+		
+		CST_MainObj mainObj = new CST_MainObj(webdriver);
+	
+		WebElement CmdProduction = mainObj.getCmdProduction();
+
+		CmdProduction.click();
 		
 	}
 }

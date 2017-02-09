@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.Select;
 public class InventoryLookupObj {
 	
 	WebDriver webdriver;
+	By TxtBoxIDLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtBoxID']");
+
 	By TxtPartNumberLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtSKU']");
 	By TxtSerialLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtSerial']");
 	By TxtPOLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtPO']");
@@ -24,6 +26,13 @@ public class InventoryLookupObj {
 	public InventoryLookupObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
+	}
+	public WebElement getTxtBoxID() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TxtBoxIDLocator);
+
+		return retEle;
 	}
 	public WebElement getTxtPallet() throws NoSuchElementException  {
 		WebElement retEle = null;

@@ -29,14 +29,46 @@ public class OrderEntry1Obj {
 	By BtnNextLocator = By.xpath(".//input[@id='ContentPlaceHolder1_cmdNext']");	
 	By BtnConfirmPOOKLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogRMA_cmdYes']");	
 	By BtnConfirmPOCancelLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogRMA_cmdNo']");	
+	By BtnCancelLocator = By.xpath(".//input[@id='ContentPlaceHolder1_cmdCancelOrder']");	
+	By BtnConfirmCancelYesLocator = By.xpath(".//input[@id='ContentPlaceHolder1_confirmDialogOrder_cmdYes']");	
+	By BtnOKBoxRlsLocator = By.xpath(".//input[@id='cmdSure']");	
 
 	By ChkTpltLocator = By.xpath(".//input[@id='ContentPlaceHolder1_ckbTemplate']");
 
 	By FrameDateLocator = By.xpath(".//iframe");	
+	By FrameBoxRlsLocator = By.xpath(".//iframe[@id='dialogwin']");	
 	
 	public OrderEntry1Obj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
+	}
+	public WebElement getBtnOKBoxRls() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnOKBoxRlsLocator);
+
+		return retEle;
+	}
+	public WebElement getFrameBoxRls() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(FrameBoxRlsLocator);
+
+		return retEle;
+	}
+	public WebElement getBtnConfirmCancelYes() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnConfirmCancelYesLocator);
+
+		return retEle;
+	}
+	public WebElement getBtnCancel() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(BtnCancelLocator);
+
+		return retEle;
 	}
 	public WebElement getBtnConfirmPOCancel() throws NoSuchElementException  {
 		WebElement retEle = null;
@@ -240,6 +272,12 @@ public class OrderEntry1Obj {
 	}
 	public By getBtnConfirmPOCancelLocator() {
 		return BtnConfirmPOCancelLocator;
+	}
+	public By getBtnCancelLocator() {
+		return BtnCancelLocator;
+	}
+	public By getFrameBoxRlsLocator() {
+		return FrameBoxRlsLocator;
 	}
 
 }

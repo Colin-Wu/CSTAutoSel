@@ -62,4 +62,8 @@ WebDriver webdriver;
 	public By getLinkPickDetailLocator() {
 		return linkPickDetailLocator;
 	}
+
+	public By getTblSearchResultLocator() {
+		return TblSearchResultLocator;
+	}
 }

@@ -3,9 +3,9 @@ package script_lib;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -67,11 +67,12 @@ public class ExcelUtil {
         	HashMap<?, ?> map = (HashMap<?, ?>) TestSetting.caselist.get(i);
         	int currentRow = Integer.parseInt((String) map.get("rowNum"));
         	String result = (String) map.get("result");
-        	setResult(currentRow,result);
+        	String exeDate = (String) map.get("exeDate");
+        	setResult(currentRow,result,exeDate);
         }
 		ExcelUtil.closeWorkbook();
 	}
-	public static void setResult (int rowNum, String result) throws Exception {
+	public static void setResult (int rowNum, String result, String exeDate) throws Exception {
 			
 		XSSFSheet sht = workbook.getSheet(TestSetting.ExcelConsoleSheet);
 		XSSFRow row = sht.getRow(rowNum);
@@ -79,10 +80,12 @@ public class ExcelUtil {
 		XSSFCell rstcell = row.createCell(TestSetting.TestResultCol);
 		rstcell.setCellValue(result);
 		
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+/*
+ 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		String extDate = df.format(new Date());
+		*/
 		XSSFCell datecell = row.createCell(TestSetting.TestRunDateCol);
-		datecell.setCellValue(extDate);
+		datecell.setCellValue(exeDate);
 		
 		FileOutputStream fileOut = new FileOutputStream(System.getProperty("user.dir")+"\\"+TestSetting.ExcelFileName); 
         workbook.write(fileOut);  
