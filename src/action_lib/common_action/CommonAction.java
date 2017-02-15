@@ -2497,8 +2497,8 @@ public class CommonAction {
 		if(outResult.equals("1"))
 		{
 			CommUtil.logger.info(" > NewDocReceiving :Project not found in the project list. Project:"+ inProjectCode);
-			CST_MainAction cstMainaction = new CST_MainAction(webdriver);
-			cstMainaction.logout();
+			PalletID = "-1";
+			return PalletID;
 		}
 		
 		CommUtil.logger.info(" > DocReceivingGoToDetail");
@@ -2604,9 +2604,7 @@ public class CommonAction {
         	
         	if(!outIsFound.equals("1")) {
         		CommUtil.logger.info(">SearchInventory Failure. Code:" +outIsFound);
-        		CST_MainAction cstMainaction = new CST_MainAction(webdriver);
-        		CommUtil.logger.info(">Logging Out...");
-    			cstMainaction.logout();
+        		return rstArr;
         	} else {
         		rstArr= (ArrayList<HashMap<String, String>>) OutputInventoryLookup.get("RstArr");       		
         	}

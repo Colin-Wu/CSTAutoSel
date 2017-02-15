@@ -30,7 +30,9 @@ public class Case92_2 {
 		InputObj.put("caseid", "92_2");
 		CommonAction CA = new CommonAction(webdriver);
 		ArrayList<HashMap<String, String>> retArr = CA.GetAvailablePart_CA(InputObj);
-			
+		if (retArr == null) {
+			return retVal;
+		}		
 		if (retArr.size() > 0) {
 /*			HashMap<String, String> Retobj = retArr.get(0);
 			String inExpectedSendoutSN = Retobj.get("SN");*/

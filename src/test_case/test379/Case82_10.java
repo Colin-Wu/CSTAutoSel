@@ -33,7 +33,9 @@ public class Case82_10 {
 		CommonAction CA = new CommonAction(webdriver);
 		//Case82_10.CA = new CommonAction(webdriver);
 		ArrayList<HashMap<String, String>> retArr = CA.GetAvailablePart_CA(InputObj);
-			
+		if (retArr == null) {
+			return retVal;
+		}
 		if (retArr.size() > 0) {
 			int boxidx = 0;
 			HashMap<String, String> Retobj = retArr.get(boxidx);

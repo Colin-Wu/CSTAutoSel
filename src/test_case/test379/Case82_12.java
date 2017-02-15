@@ -30,7 +30,9 @@ public class Case82_12 {
 		InputObj.put("caseid", "82_12");
 		CommonAction CA = new CommonAction(webdriver);
 		ArrayList<HashMap<String, String>> retArr = CA.GetAvailablePart_CA(InputObj);
-			
+		if (retArr == null) {
+			return retVal;
+		}		
 		if (retArr.size() > 0) {
 			int boxidx = 0;
 			HashMap<String, String> Retobj = retArr.get(boxidx);
