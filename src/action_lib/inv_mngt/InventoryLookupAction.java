@@ -188,8 +188,16 @@ public class InventoryLookupAction {
 		
 		SeleniumUtil.waitPageRefresh(BtnSearch);
 		
-        WebElement tblResult = Obj.getTblSearchResult();
+		if (!SeleniumUtil.isWebElementExist(webdriver, Obj.getTblSearchResultLocator(), 5)) {
+			
+			CommUtil.logger.info(" > Search result is not Found.");
+			IsFound = "0";
+   			RetObj.put("IsFound", IsFound);
+   			return RetObj;		
+		}
 		
+		WebElement tblResult = Obj.getTblSearchResult();
+ 
         int tblRow = SeleniumUtil.getTableRows(tblResult);
         
         if (tblRow > 1) {

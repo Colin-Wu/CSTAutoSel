@@ -135,7 +135,7 @@ public class Case92_3 {
 					if(retstr.equals("0")) {
 						CommUtil.logger.info("GetOrdInfoFromResult - Success");
 						
-						if (OrdStatus.equals("Draft")) {
+						if (OrdStatus.equals("AdminHold")) {
 							CommUtil.logger.info("Parent Order wasn't cancelled. Status:"+OrdStatus);
 						} else {
 							CommUtil.logger.info("Parent Order status incorrect. status:"+OrdStatus);
