@@ -1581,7 +1581,7 @@ public class CommonAction {
 			OrderEntry2page = new OrderEntry2Action(webdriver);
 			
 			InputEntry2Obj = new HashMap<String, Serializable>();		
-			InputEntry2Obj.put("Mode", "2");
+			InputEntry2Obj.put("Mode", "3");
 
 			CommUtil.logger.info("> CreateOrderEntry2");
 			retVal = OrderEntry2page.CreateOrderEntry2(InputEntry2Obj);
@@ -1898,7 +1898,7 @@ public class CommonAction {
 			OrderEntry2page = new OrderEntry2Action(webdriver);
 			
 			InputEntry2Obj = new HashMap<String, Serializable>();		
-			InputEntry2Obj.put("Mode", "2");
+			InputEntry2Obj.put("Mode", "3");
 
 			CommUtil.logger.info("> CreateOrderEntry2");
 			retVal = OrderEntry2page.CreateOrderEntry2(InputEntry2Obj);

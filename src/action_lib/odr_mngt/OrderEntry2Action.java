@@ -67,12 +67,20 @@ public class OrderEntry2Action {
 				LinkAdd.click();
 				SeleniumUtil.waitPageRefresh(LinkAdd);				
 			}
+			
+			boolean isLblMessageExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblMessageLocator(), 0);
+			if (isLblMessageExist) {
+				WebElement lblMessage = Obj.getLblMessage();	
+				CommUtil.logger.info(" > Msg: " + lblMessage.getText());
+				ret = "-1";
+				return ret;
+			}
 
 
 		} else if (Mode.equals("3")) {
 			// solve the problem clicking next without showing page.
 			//SeleniumUtil.waitWebElementProperty(webdriver, Obj.getTxtSearchPartNumLocator(), "visible", "true");
-			SeleniumUtil.waitWebElementVisible(webdriver, Obj.getTxtSearchPartNumLocator());
+			SeleniumUtil.waitWebElementVisible(webdriver, Obj.getBtnNextLocator());
 			
 		} else if (Mode.equals("4")) {		
 			@SuppressWarnings("unchecked")
@@ -115,7 +123,7 @@ public class OrderEntry2Action {
 			} 
 		}
 
-		boolean isTblAddListExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getTblAddListLocator(), 0);
+		boolean isTblAddListExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getTblAddListLocator(), 5);
 		if (isTblAddListExist||InputArr.size() == 0) {
 			WebElement  BtnNext = Obj.getBtnNext();
 			BtnNext.click();

@@ -101,5 +101,35 @@ public class InventoryLookupObj {
 
 		return retEle;
 	}
+	public By getTxtBoxIDLocator() {
+		return TxtBoxIDLocator;
+	}
+	public By getTxtPartNumberLocator() {
+		return TxtPartNumberLocator;
+	}
+	public By getTxtSerialLocator() {
+		return TxtSerialLocator;
+	}
+	public By getTxtPOLocator() {
+		return TxtPOLocator;
+	}
+	public By getTxtProjectCodeLocator() {
+		return TxtProjectCodeLocator;
+	}
+	public By getTxtPalletLocator() {
+		return TxtPalletLocator;
+	}
+	public By getCmbStatusLocator() {
+		return CmbStatusLocator;
+	}
+	public By getCmbStockGroupLocator() {
+		return CmbStockGroupLocator;
+	}
+	public By getTblSearchResultLocator() {
+		return TblSearchResultLocator;
+	}
+	public By getBtnSearchLocator() {
+		return BtnSearchLocator;
+	}
 	
 }
