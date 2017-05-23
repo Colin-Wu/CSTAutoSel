@@ -11,7 +11,7 @@ public class InvIndexObj {
 	By cmdReceivingPutawayLocator = By.xpath(".//a[@id='ContentPlaceHolder1_cmdReceivingPutaway']");
 	By cmdInventoryLookupLocator = By.xpath(".//a[@id='ContentPlaceHolder1_hplInventoryLookUp']");
 	By cmdPickAdminLocator = By.xpath(".//a[@id='ContentPlaceHolder1_cmdPickAdmin']");
-	By cmdPickQueueLocator = By.xpath(".//a[@id='ContentPlaceHolder1_cmdPickQueView']");
+	By cmdPickQueueLocator = By.xpath(".//a[@id='ContentPlaceHolder1_cmdPickQue']");
 	By cmdTransferRequestLocator = By.xpath(".//a[@id='ContentPlaceHolder1_HyperLink1']");
 	By cmdTransferAdminLocator = By.xpath(".//a[@id='ContentPlaceHolder1_HyperLink2']");
 	By cmdTransferActionLocator = By.xpath(".//a[@id='ContentPlaceHolder1_HyperLink3']");

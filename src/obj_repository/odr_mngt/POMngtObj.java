@@ -16,6 +16,7 @@ public class POMngtObj {
 	
 	By TblSearchResultLocator = By.xpath(".//table[@id='tablePartList']/tbody");	
 	By linkDelLocator = By.xpath(".//a[text()='Delete']");
+	By LblNoResultLocator = By.xpath(".//div[@id='divNoResult']");	
 	
 	By LblMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblError']");	
 	By LblSuccessMessageLocator = By.xpath(".//span[@id='ContentPlaceHolder1_lblSuccess']");	
@@ -24,6 +25,13 @@ public class POMngtObj {
 	public POMngtObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
+	}
+	public WebElement getLblNoResult() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(LblNoResultLocator);
+
+		return retEle;
 	}
 	public WebElement getLblSuccessMessage() throws NoSuchElementException  {
 		WebElement retEle = null;
@@ -124,5 +132,8 @@ public class POMngtObj {
 	}
 	public By getLblSuccessMessageLocator() {
 		return LblSuccessMessageLocator;
+	}
+	public By getLblNoResultLocator() {
+		return LblNoResultLocator;
 	}
 }

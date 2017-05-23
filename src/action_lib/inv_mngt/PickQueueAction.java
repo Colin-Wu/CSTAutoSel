@@ -21,6 +21,7 @@ WebDriver webdriver;
 		this.webdriver = webdriver;
 	}
 
+
 	public String SearchPickQueue (HashMap<String, ?> InputObj) throws NoSuchElementException {
 	
 		String inProjCode = InputObj.get("ProjectCode").toString();
@@ -30,24 +31,34 @@ WebDriver webdriver;
 		String outIsFound = "-1";
 		
 		PickQueueObj PickqueObj = new PickQueueObj(webdriver);
-		
+
+        WebElement tblResult = PickqueObj.getTblSearchResultLocation();
+        String oldTbl = tblResult.getText();
+        //System.out.println(oldTbl);
+
 		WebElement TxtProject = PickqueObj.getTxtProjectCodeLocation();
-		TxtProject.sendKeys(inProjCode);
-		WebElement TxtUserName = PickqueObj.getTxtUserNameLocation();
-		
-		if(!inUserName.isEmpty()){
-			TxtUserName.clear();
+		if (!TxtProject.getAttribute("value").equals(inProjCode)) {
+			TxtProject.sendKeys(inProjCode);
 		}
 		
-		TxtUserName.sendKeys(inUserName);
+		WebElement TxtUserName = PickqueObj.getTxtUserNameLocation();
+		if (!TxtUserName.getAttribute("value").equals(inUserName)) {
+			TxtUserName.clear();
+			TxtUserName.sendKeys(inUserName);
+		}		
+		
 		WebElement TxtOrderNum = PickqueObj.getTxtOrderNumLocation();
-		TxtOrderNum.sendKeys(inOrdNum);
+		if (!TxtOrderNum.getAttribute("value").equals(inOrdNum)) {
+			TxtOrderNum.sendKeys(inOrdNum);
+		}			
 				
 		WebElement BtnSearch = PickqueObj.getBtnSearchLocation();
 		BtnSearch.click();
-		SeleniumUtil.waitPageRefresh(BtnSearch);
-		
-        WebElement tblResult = PickqueObj.getTblSearchResultLocation();
+		//SeleniumUtil.waitPageRefresh(BtnSearch);
+		//SeleniumUtil.waitPageRefreshByLoadingIcon(webdriver);
+
+		SeleniumUtil.waitWebElementProperty(webdriver, PickqueObj.getTblSearchResultLocator(), oldTbl);
+        tblResult = PickqueObj.getTblSearchResultLocation();
 		
         int tblRow = SeleniumUtil.getTableRows(tblResult);
 		
@@ -75,17 +86,17 @@ WebDriver webdriver;
 	    if(tblRow > 1)
 	    {
 	    	int colidx = SeleniumUtil.getTableColIdxByName(tblResult, vOrdNumColname);
-	    	CommUtil.logger.info(" > Col Index: "+colidx);
+	    	//CommUtil.logger.info(" > Col Index: "+colidx);
 			int searchrow = SeleniumUtil.getRowByVal(tblResult, colidx, OrderNum);
 			
-			CommUtil.logger.info(" > Row Index: "+searchrow);
+			//CommUtil.logger.info(" > Row Index: "+searchrow);
 			By locator = PickqueObj.getLinkPickDetailLocator();
 			
 			WebElement editPickDetaillink = SeleniumUtil.getCellElement(webdriver, tblResult,0, searchrow, locator);
 			
 			if (editPickDetaillink != null) {
-				CommUtil.logger.info(" > Pick link is clicked:" + OrderNum);
-				CommUtil.logger.info(" > Pick:" + editPickDetaillink.toString());
+				//CommUtil.logger.info(" > Pick link is clicked:" + OrderNum);
+				//CommUtil.logger.info(" > Pick:" + editPickDetaillink.toString());
 				editPickDetaillink.click();
 				SeleniumUtil.waitPageRefresh(editPickDetaillink);
 				outRetVal="0";
@@ -93,4 +104,5 @@ WebDriver webdriver;
 	    }
 		return outRetVal;	
 	}
+
 }

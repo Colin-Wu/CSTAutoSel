@@ -30,17 +30,26 @@ public String SearchPickAdmin (HashMap<String, ?> InputObj) throws NoSuchElement
 		PickAdminObj pickAdminObj= new PickAdminObj(webdriver);
 
 		WebElement TxtProject = pickAdminObj.getTxtProjectCodeLocation();
-		TxtProject.sendKeys(inProjCode);
+		if (!TxtProject.getAttribute("value").equals(inProjCode)) {
+			TxtProject.sendKeys(inProjCode);
+		}
+		
 		WebElement TxtUserName = pickAdminObj.getTxtUserNameLocation();
-		TxtUserName.sendKeys(inUserName);
+		if (!TxtUserName.getAttribute("value").equals(inUserName)) {
+			TxtUserName.sendKeys(inUserName);
+		}
+
 		WebElement TxtOrderNum = pickAdminObj.getTxtOrderNumLocation();
-		TxtOrderNum.sendKeys(inOrdNum);
+		if (!TxtOrderNum.getAttribute("value").equals(inOrdNum)) {
+			TxtOrderNum.sendKeys(inOrdNum);
+		}
 				
 		WebElement BtnSearch = pickAdminObj.getBtnSearchLocation();
 		BtnSearch.click();
-		SeleniumUtil.waitPageRefresh(BtnSearch);
+		//SeleniumUtil.waitPageRefresh(BtnSearch);
+		SeleniumUtil.waitPageRefreshByLoadingIcon(webdriver);
 		
-        WebElement tblResult = pickAdminObj.getTblSearchResultLocation();
+        WebElement tblResult = pickAdminObj.getTblSearchResult();
 		
         int tblRow = SeleniumUtil.getTableRows(tblResult);
 		
@@ -65,16 +74,16 @@ public String SavePickAdmin(HashMap<String, ?> InputObj) throws NoSuchElementExc
 	
 	String OutRetVal="-1";
 	PickAdminObj pickAdminObj= new PickAdminObj(webdriver);
-	WebElement tblResult = pickAdminObj.getTblSearchResultLocation();
+	WebElement tblResult = pickAdminObj.getTblSearchResult();
 	
     int tblRow = SeleniumUtil.getTableRows(tblResult);
     
 	if(tblRow > 1)
 	{
 		int colidx = SeleniumUtil.getTableColIdxByName(tblResult, vOrdNumColname);
-		CommUtil.logger.info(" > Col Index: "+colidx);
+		//CommUtil.logger.info(" > Col Index: "+colidx);
 		int searchrow = SeleniumUtil.getRowByVal(tblResult, colidx, inOrdNum);
-		CommUtil.logger.info(" > Row Index :" +searchrow);
+		//CommUtil.logger.info(" > Row Index :" +searchrow);
 		
 		if(searchrow < 0)
 		{
@@ -94,7 +103,7 @@ public String SavePickAdmin(HashMap<String, ?> InputObj) throws NoSuchElementExc
 		
 		boolean isHasVal = false;
 		isHasVal = SeleniumUtil.isSelectHasOption(CmbUsername, inUserName);
-		CommUtil.logger.info(" > isHasVal."+isHasVal);
+		//CommUtil.logger.info(" > isHasVal."+isHasVal);
 		if(!isHasVal)
 		{
 			CommUtil.logger.info(" > UserName Not found.");
@@ -109,19 +118,22 @@ public String SavePickAdmin(HashMap<String, ?> InputObj) throws NoSuchElementExc
 		// Assign the UserName to the UserName in combobox in grid - end
 		
 		//cmbAssignUserList.selectByVisibleText(inUserName);
-		tblResult = pickAdminObj.getTblSearchResultLocation();
+		tblResult = pickAdminObj.getTblSearchResult();
 		By locator = pickAdminObj.getSaveLinkLocator();
 		WebElement editSavelink = SeleniumUtil.getCellElement(webdriver, tblResult, 1, searchrow, locator);
 		
 		if (editSavelink != null) {
-			CommUtil.logger.info(" > Save Link Clicked..");
+			//CommUtil.logger.info(" > Save Link Clicked..");
 			editSavelink.click();
+			SeleniumUtil.waitPageRefreshByLoadingIcon(webdriver);
+
 			boolean isBtnYesexist = SeleniumUtil.isWebElementExist(webdriver, pickAdminObj.getYesBtnLocator(), 0);
 			
 			if(isBtnYesexist)
 			{
 				WebElement btnYes = pickAdminObj.getYesBtnLocation();
 				btnYes.click();
+				SeleniumUtil.waitPageRefreshByLoadingIcon(webdriver);
 				
 				boolean isLblSuccessMsgexist = SeleniumUtil.isWebElementExist(webdriver, pickAdminObj.getLblSuccessLocator(), 0);
 				
@@ -133,7 +145,7 @@ public String SavePickAdmin(HashMap<String, ?> InputObj) throws NoSuchElementExc
 				
 					if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Saved successfully\\.")) {
 						OutRetVal="0";
-						CommUtil.logger.info("> Return Value : " + OutRetVal);
+						//CommUtil.logger.info("> Return Value : " + OutRetVal);
 						return OutRetVal;
 					  }
 					else

@@ -9,10 +9,14 @@ import org.openqa.selenium.support.ui.Select;
 public class InventoryLookupObj {
 	
 	WebDriver webdriver;
+	By TxtBoxIDLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtBoxID']");
+
 	By TxtPartNumberLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtSKU']");
 	By TxtSerialLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtSerial']");
 	By TxtPOLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtPO']");
 	By TxtProjectCodeLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtProjectCode']");
+	By TxtPalletLocator = By.xpath(".//input[@id='ContentPlaceHolder1_txtPallet']");
+	
 	By CmbStatusLocator = By.xpath(".//select[@id='ContentPlaceHolder1_ddlStatusFilter']");
 	By CmbStockGroupLocator = By.xpath(".//select[@id='ContentPlaceHolder1_ddlStockFilter']");
 	By TblSearchResultLocator = By.xpath(".//table[@id='ContentPlaceHolder1_grvInventory']/tbody");
@@ -23,7 +27,20 @@ public class InventoryLookupObj {
 		super();
 		this.webdriver = driver;		
 	}
+	public WebElement getTxtBoxID() throws NoSuchElementException  {
+		WebElement retEle = null;
 
+		retEle = webdriver.findElement(TxtBoxIDLocator);
+
+		return retEle;
+	}
+	public WebElement getTxtPallet() throws NoSuchElementException  {
+		WebElement retEle = null;
+
+		retEle = webdriver.findElement(TxtPalletLocator);
+
+		return retEle;
+	}
 	public WebElement getTxtPartNumber() throws NoSuchElementException  {
 		WebElement retEle = null;
 
@@ -83,6 +100,36 @@ public class InventoryLookupObj {
 		retEle = webdriver.findElement(TblSearchResultLocator);
 
 		return retEle;
+	}
+	public By getTxtBoxIDLocator() {
+		return TxtBoxIDLocator;
+	}
+	public By getTxtPartNumberLocator() {
+		return TxtPartNumberLocator;
+	}
+	public By getTxtSerialLocator() {
+		return TxtSerialLocator;
+	}
+	public By getTxtPOLocator() {
+		return TxtPOLocator;
+	}
+	public By getTxtProjectCodeLocator() {
+		return TxtProjectCodeLocator;
+	}
+	public By getTxtPalletLocator() {
+		return TxtPalletLocator;
+	}
+	public By getCmbStatusLocator() {
+		return CmbStatusLocator;
+	}
+	public By getCmbStockGroupLocator() {
+		return CmbStockGroupLocator;
+	}
+	public By getTblSearchResultLocator() {
+		return TblSearchResultLocator;
+	}
+	public By getBtnSearchLocator() {
+		return BtnSearchLocator;
 	}
 	
 }

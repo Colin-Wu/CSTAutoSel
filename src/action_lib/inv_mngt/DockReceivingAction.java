@@ -1,6 +1,7 @@
 package action_lib.inv_mngt;
 
 
+
 import java.util.HashMap;
 
 
@@ -10,7 +11,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+
 import obj_repository.inv_mngt.DockReceivingObj;
+
 import script_lib.CommUtil;
 import script_lib.SeleniumUtil;
 
@@ -24,9 +27,10 @@ public class DockReceivingAction {
 	}
 	
 	public HashMap<String, String> DetailReceiving(HashMap<String, ?> InputObj) throws NoSuchElementException {
-	
+		
+		int pagemaxrow = 25;
 		HashMap<String, String> RetObj = new HashMap<String, String>();
-		RetObj.put("RetVal","");
+		RetObj.put("RetVal","-1");
 		RetObj.put("PalletID", "");
 		
 		String inPartNum = InputObj.get("PartNum").toString();
@@ -37,22 +41,30 @@ public class DockReceivingAction {
 		DockReceivingObj Obj = new DockReceivingObj(webdriver);
 		WebElement TxtPartNum = Obj.getTxtPartNum();
 		TxtPartNum.sendKeys(inPartNum);
-		
+	
 		WebElement TxtQty = Obj.getTxtQty();
+		TxtQty.click();
+		SeleniumUtil.waitPageRefresh(TxtPartNum);
+		//SeleniumUtil.waitPageRefreshByLoadingIcon(webdriver);
+		
+		TxtQty = Obj.getTxtQty();
 		TxtQty.sendKeys(inQty);
 		
-		WebElement WebEleCmbDisposition = Obj.getCmbDetailReceiveDisposition();
-		Select CmbDisposition=new Select(WebEleCmbDisposition);
-		boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbDisposition, inDisposition);
-		 
-		if (!isHasVal) {
-	      CommUtil.logger.info(" > Disposition option not found in UI.");
-	      RetObj.put("PalletID","");
-		  RetObj.put("RetVal", "-1");
-		  return RetObj;
-		}
+		if (!inDisposition.equals("")) {
+			WebElement WebEleCmbDisposition = Obj.getCmbDetailReceiveDisposition();
+			Select CmbDisposition=new Select(WebEleCmbDisposition);
+			boolean isHasVal = SeleniumUtil.isSelectHasOption(CmbDisposition, inDisposition);
+			 
+			if (!isHasVal) {
+		      CommUtil.logger.info(" > Disposition option not found in UI.");
+		      RetObj.put("PalletID","");
+			  RetObj.put("RetVal", "-1");
+			  return RetObj;
+			}
+			
+			CmbDisposition.selectByVisibleText(inDisposition); 
 		
-		CmbDisposition.selectByVisibleText(inDisposition); 
+		}
 		WebElement BtnCreatePalletID = Obj.getBtnCreatePalletID();
 		BtnCreatePalletID.click();
 		
@@ -65,20 +77,39 @@ public class DockReceivingAction {
 		WebElement BtnGo = Obj.getBtnGo();
 		BtnGo.click();
 		SeleniumUtil.waitPageRefresh(BtnGo);
+
 		
-        WebElement tblResult = Obj.getTblDetailReceivingINVParts();
+		int totalPage = (int) Math.ceil(Double.valueOf(inQty)/pagemaxrow);
 		
-		int tblRow = SeleniumUtil.getTableRows(tblResult);
-		
-		CommUtil.logger.info("Number of Rows : " + tblRow);
-		// Iterate over the rows set the UniqueSerialNum 
-		
-		if(tblRow >= 2)
-		{
-			for(int index=0; index< tblRow-1; index++)
+		for (int pageno = 1; pageno <= totalPage; pageno++) {
+
+	        WebElement tblResult = Obj.getTblDetailReceivingINVParts();
+			
+			int tblRow = SeleniumUtil.getTableRows(tblResult);
+			
+			//CommUtil.logger.info("Number of Rows : " + tblRow);
+			// Iterate over the rows set the UniqueSerialNum 
+			int index0=pagemaxrow*(pageno-1);
+			if(tblRow >= 2)
 			{
-				 WebElement SlNumElement= Obj.getUniqueSerialNum(index);
-				 SlNumElement.sendKeys(inSN+index);	
+				for(int i=0; i< tblRow-1; i++)
+				{
+					 
+					 WebElement SlNumElement= Obj.getUniqueSerialNum(i);
+					 if (index0 != 0) {
+						 SlNumElement.sendKeys(inSN+index0++);	
+					 } else {
+						 SlNumElement.sendKeys(inSN);
+						 index0++;
+					 }
+
+				}
+			}
+			
+			if (pageno != totalPage) {
+				WebElement BtnNext = Obj.getBtnNext();
+				BtnNext.click();
+				SeleniumUtil.waitPageRefresh(BtnNext);
 			}
 		}
         
@@ -86,19 +117,21 @@ public class DockReceivingAction {
 		BtnSave.click();
 		SeleniumUtil.waitPageRefresh(BtnSave);
 		
-		boolean isLblMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblSuccessMessageDetailReceivingLocator(), 0);
+		boolean isLblMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblSuccessMessageDetailReceivingLocator(), 10);
 		if (isLblMsgexist) {
 			
 			WebElement lblSuccessMessage = Obj.getLblSuccessDetailReceivingMessage();	
-
+			CommUtil.logger.info("MSG:" +lblSuccessMessage.getText());
 			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
-				CommUtil.logger.info(" > Dock Entry has been saved\\.");
+				
 				 RetObj.put("PalletID",Obj.gettxtPalletId().getAttribute("value"));
-				 CommUtil.logger.info(" > Pallet ID"+ Obj.gettxtPalletId().getAttribute("value"));
+				 //CommUtil.logger.info(" > Pallet ID"+ Obj.gettxtPalletId().getAttribute("value"));
 				 RetObj.put("RetVal", "0");
 			}
+		} else {
+			CommUtil.logger.info("Message does not exist.");
 		}
-		 CommUtil.logger.info(" > RetVal "+  RetObj.get("RetVal").toString());
+		// CommUtil.logger.info(" > RetVal "+  RetObj.get("RetVal").toString());
 		 return RetObj;
 	}
 	
@@ -131,15 +164,20 @@ public class DockReceivingAction {
 				
 				if(isLblMsgexist){
 					WebElement lblMessage = Obj.getLblErrMessage();	
-					CommUtil.logger.info("> Error Message : " + lblMessage.getText());
-					RetValue="1";
+					CommUtil.logger.info("> Error Message : " + lblMessage.getText());					
+					if (CommUtil.isMatchByReg(lblMessage.getText(), "This PO has been canceled, please contact PS\\.")) {
+						RetValue = "1";
+					} else {
+						RetValue = "-1";
+					}
+
 			    }
 			    else{
 					RetValue="0";
 			    }
 		   }
 		
-		CommUtil.logger.info("Return Vale : "+RetValue);
+		//CommUtil.logger.info("Return Vale : "+RetValue);
 		return  RetValue;
 	}
 	
@@ -158,9 +196,9 @@ public class DockReceivingAction {
 		WebElement BtnNewDockRcv = Obj.getBtnNewDockRcv();
 		BtnNewDockRcv.click();
 		
-		CommUtil.logger.info("clicked..");
+		//CommUtil.logger.info("clicked..");
 		SeleniumUtil.waitPageRefresh(BtnNewDockRcv);
-	
+			
 		WebElement TxtTrackingNumber = Obj.getTxtTrackingNumber();
 		TxtTrackingNumber.sendKeys(TrackNum);	
 		
@@ -201,7 +239,7 @@ public class DockReceivingAction {
 			WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
 
 			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
-				CommUtil.logger.info(" > Dock Entry has been saved\\.");
+				CommUtil.logger.info(" > Dock Entry has been saved.");
 				ret = "0";
 			}
 		}
@@ -305,5 +343,161 @@ public class DockReceivingAction {
 		
 		return ret;
 	}
+	
+	public HashMap<String, String> GoToEditLine (String TrackNum) throws NoSuchElementException {
+		// ret:0 Success;1: Edit link disabled.
+		String outRetVal = "-1";
+		HashMap<String, String> RetObj = new HashMap<String, String>();
+		RetObj.put("RetVal",outRetVal);
+		RetObj.put("RowIdx", "");
 
+		
+		DockReceivingObj Obj = new DockReceivingObj(webdriver);
+		
+		WebElement tblResult = Obj.getTblSearchResult();
+			
+
+		
+	    int tblRow = SeleniumUtil.getTableRows(tblResult);
+	    
+	    if(tblRow > 1) {
+	    	
+			int colidx = SeleniumUtil.getTableColIdxByName(tblResult, "Tracking Number");
+
+			int searchrow = SeleniumUtil.getRowByVal(tblResult, colidx, TrackNum);
+			
+			//CommUtil.logger.info(" > Row Index: "+searchrow);
+			int rowidx = searchrow-1;
+			
+			WebElement LinkEditLine = Obj.getLinkEditLine(rowidx);
+
+			String LinkEditLineclass = LinkEditLine.getAttribute("href");
+			if (LinkEditLineclass == null) {
+				outRetVal = "1";
+				RetObj.put("RetVal",outRetVal);	
+				return RetObj;	
+
+			}
+			
+			LinkEditLine.click();
+			outRetVal = "0";
+			RetObj.put("RetVal",outRetVal);
+			RetObj.put("RowIdx", Integer.toString(rowidx));
+	    }
+		return RetObj;	
+	}
+	
+	public String FillEditLine (HashMap<String, String> InputObj) throws NoSuchElementException  {
+		//RetVal:-1:error;0: success;1:Project code not found in project list;2:PO and Project code are disabled.
+		String ret = "-1";
+		String inTrackNum = InputObj.get("TrackNum").toString();
+		String inPONum = InputObj.get("PONum").toString();
+		String inCarrier = InputObj.get("Carrier").toString();
+		String inProjectCode = InputObj.get("ProjectCode").toString();
+		String inBoxCnt = InputObj.get("BoxCnt").toString();
+		String inPalletCnt = InputObj.get("PalletCnt").toString();
+		String inRowIdx = InputObj.get("RowIdx").toString();
+
+
+		DockReceivingObj Obj = new DockReceivingObj(webdriver);
+		
+		SeleniumUtil.waitWebElementVisible(webdriver, By.xpath(".//input[@id='ContentPlaceHolder1_gv_Entities_txtTrackingNumber_" + inRowIdx + "']"));
+
+		WebElement TxtPONumber = Obj.getTxtPONumber(inRowIdx);
+		String POdisabled = TxtPONumber.getAttribute("disabled");
+		WebElement WebEleSelProjectCode  = Obj.getSelProjectCode(inRowIdx);
+		String ProjectCodedisabled = WebEleSelProjectCode.getAttribute("disabled");
+		if (POdisabled != null && ProjectCodedisabled != null) {
+			if (POdisabled.equals("true")&&ProjectCodedisabled.equals("true")) {
+				CommUtil.logger.info(" > PO and Project code are disabled.");
+				ret = "2";
+				return ret;			
+			}
+		}
+			
+		if (!inTrackNum.equals("")) {
+			WebElement TxtTrackingNumber = Obj.getTxtTrackingNumber(inRowIdx);
+			TxtTrackingNumber.clear();
+			TxtTrackingNumber.sendKeys(inTrackNum);	
+		}
+		
+		if (!inPONum.equals("")) {
+			TxtPONumber = Obj.getTxtPONumber(inRowIdx);
+			TxtPONumber.clear();
+			TxtPONumber.sendKeys(inPONum);	
+			
+			WebElement TxtCarrier = Obj.getTxtCarrier(inRowIdx);
+			TxtCarrier.click();
+			
+			SeleniumUtil.waitPageRefresh(TxtPONumber);
+		}
+		
+
+		if (!inCarrier.equals("")) {
+			WebElement TxtCarrier = Obj.getTxtCarrier(inRowIdx);
+			TxtCarrier.clear();
+			TxtCarrier.sendKeys(inCarrier);	
+		}
+		
+		if (!inProjectCode.equals("")) {
+			WebEleSelProjectCode  = Obj.getSelProjectCode(inRowIdx);
+			Select SelProjectCode = new Select(WebEleSelProjectCode);
+			boolean isHasVal = SeleniumUtil.isSelectHasOption(SelProjectCode, inProjectCode);
+			if (!isHasVal) {
+				CommUtil.logger.info(" > Project code not found in project list");
+				ret = "1";
+				return ret;
+			}
+			SelProjectCode.selectByVisibleText(inProjectCode);
+		}
+		
+		if (!inBoxCnt.equals("")) {
+			WebElement TxtBoxCount = Obj.getTxtBoxCount(inRowIdx);
+			TxtBoxCount.clear();
+			TxtBoxCount.sendKeys(inBoxCnt);	
+		}
+		
+		if (!inPalletCnt.equals("")) {
+			WebElement TxtPalletCount = Obj.getTxtPalletCount(inRowIdx);
+			TxtPalletCount.clear();
+			TxtPalletCount.sendKeys(inPalletCnt);
+		}
+		
+		ret = "0";
+		return ret;
+	}
+	public String SaveLine (HashMap<String, String> InputObj) throws NoSuchElementException  {
+		//RetVal:-1:error;0: success;1:Project code not found in project list;2:PO and Project code are disabled.
+		String ret = "-1";
+
+		String inRowIdx = InputObj.get("RowIdx").toString();
+
+		DockReceivingObj Obj = new DockReceivingObj(webdriver);
+
+		
+		WebElement BtnSave = Obj.getLinkSaveLine(inRowIdx);
+		BtnSave.click();
+		
+		SeleniumUtil.waitPageRefresh(BtnSave);
+		
+/*		boolean isBtnYesDialogBoxexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getBtnYesDialogBoxConfirmPOLocator(), 5);
+		if (isBtnYesDialogBoxexist) {
+			
+			WebElement BtnYesDialogBoxConfirmPO = Obj.getBtnYesDialogBoxConfirmPO();
+			BtnYesDialogBoxConfirmPO.click();
+			SeleniumUtil.waitPageRefresh(BtnYesDialogBoxConfirmPO);
+		}*/
+		boolean isLblMsgexist = SeleniumUtil.isWebElementExist(webdriver, Obj.getLblSuccessMessageLocator(), 5);
+		if (isLblMsgexist) {
+			
+			WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
+			CommUtil.logger.info(" > Msg: " +lblSuccessMessage.getText());
+			if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "Dock Entry has been saved\\.")) {
+
+				ret = "0";
+			}
+		}
+			
+		return ret;
+	}
 }

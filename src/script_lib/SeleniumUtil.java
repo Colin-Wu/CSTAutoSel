@@ -102,7 +102,6 @@ public class SeleniumUtil {
 		return retCol;
 		
 	}	
-
 	public static boolean waitPageRefresh(WebElement trigger) {
 
 		boolean isRefresh = false;
@@ -125,7 +124,34 @@ public class SeleniumUtil {
 
 		return isRefresh;
 	}
-	
+	public static void waitPageRefreshByLoadingIcon(WebDriver webdriver) {
+		
+		try {
+			// solve issue page does not wait
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			CommUtil.logger.info(" > Sleep exception");
+		}
+		
+		waitWebElementProperty(webdriver, By.xpath(".//div[@id='UpdateProgress1']"), "style", "display: block;");
+
+	}
+	public static void waitPageRefreshByLoadingIcon2(WebDriver webdriver) {
+		
+		try {
+			// solve issue page does not wait
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			CommUtil.logger.info(" > Sleep exception");
+		}
+		
+		waitWebElementProperty(webdriver, By.xpath(".//div[@id='UpdateProgress2']"), "style", "display: block;");
+
+	}	
 	public static void waitWebElementProperty (WebDriver webdriver, By locator, String Prop, String Val) {
  //       webdriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 
@@ -140,7 +166,98 @@ public class SeleniumUtil {
 
 		            	result = true; 
 		            }
-		        	  	 
+		        	//System.out.println(result+":"+WebElmt.getAttribute(Prop)+" - "+Val);
+		        } catch(Exception e){  
+
+		        }  
+		        return result;  
+		    }  
+		}); 
+	//	webdriver.manage().timeouts().implicitlyWait(TestSetting.Timeout_Sec, TimeUnit.SECONDS);		
+	}
+	public static void waitWebElementVisible (WebDriver webdriver, By locator) {
+ //       webdriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+		new WebDriverWait(webdriver, TestSetting.Timeout_Sec).until (new ExpectedCondition<Boolean>() {  
+		    @Override  
+		    public Boolean apply(WebDriver driver) {  
+		        Boolean result = false;  
+		        try {  
+		        	WebElement WebElmt= webdriver.findElement(locator);
+
+		        	if (true == WebElmt.isDisplayed()) {
+
+		            	result = true; 
+		            }
+//		        	System.out.println(result+":"+WebElmt.isDisplayed());
+		        } catch(Exception e){  
+
+		        }  
+		        return result;  
+		    }  
+		}); 
+	//	webdriver.manage().timeouts().implicitlyWait(TestSetting.Timeout_Sec, TimeUnit.SECONDS);		
+	}
+	public static void waitSelectProperty (WebDriver webdriver, By locator, String Val) {
+ //       webdriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+		new WebDriverWait(webdriver, TestSetting.Timeout_Sec).until (new ExpectedCondition<Boolean>() {  
+		    @Override  
+		    public Boolean apply(WebDriver driver) {  
+		        Boolean result = false;  
+		        try {  
+		        	WebElement WebElmt= webdriver.findElement(locator);
+					Select Sel = new Select(WebElmt);
+		        	if (!Val.equals(Sel.getFirstSelectedOption().getText())) {
+		            	result = true; 
+		            }
+		        	//System.out.println(result+":"+Sel.getFirstSelectedOption().getText()+" - "+Val);
+		        } catch(Exception e){  
+
+		        }  
+		        return result;  
+		    }  
+		}); 
+	//	webdriver.manage().timeouts().implicitlyWait(TestSetting.Timeout_Sec, TimeUnit.SECONDS);		
+	}	
+	public static void waitWebElementProperty (WebDriver webdriver, By locator, String Val) {
+ //       webdriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+		new WebDriverWait(webdriver, TestSetting.Timeout_Sec).until (new ExpectedCondition<Boolean>() {  
+		    @Override  
+		    public Boolean apply(WebDriver driver) {  
+		        Boolean result = false;  
+		        try {  
+		        	WebElement WebElmt= webdriver.findElement(locator);
+
+		        	if (!Val.equals(WebElmt.getText())) {
+//System.out.println(WebElmt.getText());
+		            	result = true; 
+		            }
+		        	//System.out.println(result+":"+WebElmt.getText()+" - "+Val);
+		        } catch(Exception e){  
+
+		        }  
+		        return result;  
+		    }  
+		}); 
+	//	webdriver.manage().timeouts().implicitlyWait(TestSetting.Timeout_Sec, TimeUnit.SECONDS);		
+	}	
+	public static void waitWebElementContain (WebDriver webdriver, By locator, String Val) {
+ //       webdriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+		new WebDriverWait(webdriver, TestSetting.Timeout_Sec).until (new ExpectedCondition<Boolean>() {  
+		    @Override  
+		    public Boolean apply(WebDriver driver) {  
+		        Boolean result = false;  
+		        try {  
+		        	WebElement WebElmt= webdriver.findElement(locator);
+		        	if (WebElmt.getText().contains(Val)){
+//		        	if (!Val.equals(WebElmt.getText())) {
+//System.out.println(WebElmt.getText());
+		            	result = true; 
+		            }
+		        	//System.out.println(result+":"+WebElmt.getText()+" - "+Val);
 		        } catch(Exception e){  
 
 		        }  
@@ -186,9 +303,46 @@ public class SeleniumUtil {
 		        try {  
 		            WebElement element=webdriver.findElement(locator);  
 		            result=null!=element;  
+//System.out.println("isWebElementExist:"+result);
 		        } catch (NoSuchElementException e) {  
 		            
 		        }  
+		        return result;  
+		    }  
+		}); 
+        }catch (Exception e) {  
+        	flag = false; 
+        }  
+		
+		webdriver.manage().timeouts().implicitlyWait(TestSetting.Timeout_Sec, TimeUnit.SECONDS);
+		 
+        return flag; 
+		
+	}	
+	public static boolean isWebElementNoExist (WebDriver webdriver, By locator, int waitTime) {
+		
+        boolean flag = false; 
+        webdriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+
+        WebDriverWait wait = new WebDriverWait(webdriver, waitTime);
+		
+        try {
+		flag = wait.until (new ExpectedCondition<Boolean>() {  
+		    @Override  
+		    public Boolean apply(WebDriver driver) {  
+		        Boolean result = false;  
+
+		        try {  
+		            WebElement element=webdriver.findElement(locator);  
+
+		            if (element == null) {
+		            	result = true;
+		            }
+
+		        } catch (NoSuchElementException e) {  
+		        	result = true;
+		        }  
+//System.out.println("isWebElementNoExist"+result);
 		        return result;  
 		    }  
 		}); 

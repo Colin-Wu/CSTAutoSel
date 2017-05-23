@@ -51,15 +51,29 @@ public class POMngtAction {
 		
 		btnSearchPO.click();
 		
-		WebElement tblResult = Obj.getTblSearchResult();
-		
-		int tblRow = SeleniumUtil.getTableRows(tblResult);
-		
-		if (tblRow > 1) {
-			CommUtil.logger.info(" > PO is Found.");
-			isFound = "1";
+		SeleniumUtil.waitPageRefresh(btnSearchPO);
+		boolean isRstExist = SeleniumUtil.isWebElementExist(webdriver, Obj.getTblSearchResultLocator(), 0);
+		if (isRstExist) {
+			WebElement tblResult = Obj.getTblSearchResult();
+			
+			int tblRow = SeleniumUtil.getTableRows(tblResult);
+			
+			if (tblRow > 1) {
+				CommUtil.logger.info(" > PO is Found.");
+				isFound = "1";
+			} else {
+				CommUtil.logger.info(" > PO is not Found.");
+			}
 		} else {
-			CommUtil.logger.info(" > PO is not Found.");
+			WebElement LblNoResult = Obj.getLblNoResult();	
+
+			if (CommUtil.isMatchByReg(LblNoResult.getText(), "No records found\\.")) {
+				CommUtil.logger.info(" > Msg: No records found.");
+				isFound = "0";
+			} else {
+				CommUtil.logger.info(" > Msg: " + LblNoResult.getText());
+				isFound = "-1";
+			}
 		}
 		
 		return isFound;
@@ -94,7 +108,7 @@ public class POMngtAction {
 		
 		if (isLblMsgexist) {
 			WebElement lblMessage = Obj.getLblMessage();	
-
+			CommUtil.logger.info(" > Msg: "+lblMessage.getText());
 			if (CommUtil.isMatchByReg(lblMessage.getText(), "There are item\\(s\\) received against this PO, you cannot cancel\\.")) {
 				CommUtil.logger.info(" > Msg: There are item(s) received against this PO, you cannot cancel.");
 				ret = "1";
@@ -114,6 +128,8 @@ public class POMngtAction {
 				if (isLblMsgexist) {
 					
 					WebElement lblSuccessMessage = Obj.getLblSuccessMessage();	
+					
+					CommUtil.logger.info(" > Msg: "+lblSuccessMessage.getText());
 
 					if (CommUtil.isMatchByReg(lblSuccessMessage.getText(), "PO delete successfully\\.")) {
 						CommUtil.logger.info(" > PO delete successfully.");

@@ -12,12 +12,31 @@ public class CST_MainObj {
 	By CmdsignOutLocator = By.xpath(".//input[@id='cmdsignOut']");
 	By CmdOrderAdminLocator = By.xpath(".//input[@id='cmdOrderAdmin']");
 	By CmdInvManagementLocator = By.xpath(".//input[@id='cmdInvManagement']");	
+	By CmdShippingLocator = By.xpath(".//input[@id='cmdShipping']");	
+	By cmdProductionLocator = By.xpath(".//input[@id='cmdProduction']");	
+	By cmdQALocator = By.xpath(".//input[@id='cmdQA']");	
+	By cmdSettingLocator = By.xpath(".//input[@id='cmdSystemAdmin']");	
 	
 	public CST_MainObj(WebDriver driver) {
 		super();
 		this.webdriver = driver;		
 	}
-	
+	public WebElement getCmdSetting () throws NoSuchElementException {
+		
+		WebElement retEle = null;
+
+       	retEle = webdriver.findElement(cmdSettingLocator);
+
+		return retEle;
+	}	
+	public WebElement getCmdQA () throws NoSuchElementException {
+		
+		WebElement retEle = null;
+
+       	retEle = webdriver.findElement(cmdQALocator);
+
+		return retEle;
+	}	
 	public WebElement getCmdsignOut () throws NoSuchElementException {
 		
 		WebElement retEle = null;
@@ -26,7 +45,23 @@ public class CST_MainObj {
 
 		return retEle;
 	}
+	public WebElement getCmdProduction() throws NoSuchElementException {
 
+		WebElement retEle = null;
+		
+       	retEle = webdriver.findElement(cmdProductionLocator);
+
+		return retEle;
+	}
+	public WebElement getCmdShipping() throws NoSuchElementException {
+
+		WebElement retEle = null;
+		
+       	retEle = webdriver.findElement(CmdShippingLocator);
+
+		return retEle;
+	}
+	
 	public WebElement getCmdOrderAdmin() throws NoSuchElementException {
 
 		WebElement retEle = null;
